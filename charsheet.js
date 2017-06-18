@@ -51,6 +51,50 @@ function clearTable(table, keepheader) {
     }
 }
 
+function getStringFromArray(strings) {
+    if (!Array.isArray(strings)) {
+        return strings; // fallback: assume it's a single string
+    }
+    var result = "";
+    for (var i = 0; i < strings.length; i++) {
+        if (i > 0) {
+            result += "<br>";
+        }
+        result += strings[i];
+    }
+    return result;
+}
+
+function setDetails(parentnode, summary, detailstexts) {
+    var detailselement = document.createElement("details");
+    var summaryelement = document.createElement("summary");
+    var detailscontentelement = document.createElement("div");
+    summaryelement.className = "fieldcontentsummary";
+    detailscontentelement.className = "fieldcontentdetails";
+    if (summary.tagName) {
+        summaryelement.appendChild(summary);
+    }
+    else {
+        setContent(summaryelement, summary);
+    }
+    setContent(detailscontentelement, getStringFromArray(detailstexts));
+    detailselement.appendChild(detailscontentelement);
+    detailselement.appendChild(summaryelement);
+    parentnode.appendChild(detailselement);
+}
+
+function getModString(mod) {
+    var result;
+    if (mod >= 0) {
+        result = "+";
+    }
+    else {
+        result = "";
+    }
+    result += mod;
+    return result;
+}
+
 /******************************************************************************
              Helper functions top get specific DOM elements
 ******************************************************************************/
@@ -161,24 +205,83 @@ var staticData = {
     "backgrounds": [
         {
             "name": "Barbarian",
-            "freeskill": "Survive",
-            "quicksills": [
-            { "name": "Survive", "rank": 0 },
-            { "name": "Notice", "rank": 0 },
-            { "type": "Combat", "rank": 0 }
-            ],
-            "growth": [
-            { "stat": "Any", "bonus": 1 },
-            { "stat": "Physical", "bonus": 2 },
-            { "stat": "Physical", "bonus": 2 },
-            { "stat": "Mental", "bonus": 2 },
-            { "skill": "Exert", "bonus": 1 },
-            { "skill": "Any", "bonus": 1 }
-            ],
-            "learning": ["Combat", "Connect", "Exert", "Lead", "Notice", "Punch", "Sneak", "Survive"],
-            "details": [
-            "Standards of barbarism vary when many worlds are capable of interstellar spaceflight, but your hero comes from a savage world of low technology and high violence. Their planet may have survived an all-consuming war, or been deprived of critical materials or energy resources, or simply have been colonized by confirmed Luddites. Other barbarians might be drawn from the oppressed underclasses of advanced worlds or the technologically-degenerate inheritors of some high-tech space station or planetary hab."
-            ]
+            "details": ["Standards of barbarism vary when many worlds are capable of interstellar spaceflight, but your hero comes from a savage world of low technology and high violence. Their planet may have survived an all-consuming war, or been deprived of critical materials or energy resources, or simply have been colonized by confirmed Luddites. Other barbarians might be drawn from the oppressed underclasses of advanced worlds or the technologically-degenerate inheritors of some high-tech space station or planetary hab."]
+        },
+        {
+            "name": "Clergy",
+            "details": ["Faith is nigh-universal among human civilizations, and your hero is dedicated to one such belief. Some clergy are conventional priests or priestesses, while others might be cloistered monastics or nuns, or more martial warrior-monks. Modern-day faiths such as Christianity, Islam, Judaism, Hinduism, Buddhism, and other creeds all exist in various sectors, often in altered form, while some worlds have developed entirely new deities or faiths. If you'd like to create your own religion, you can work with the GM to define its characteristic beliefs."]
+        },
+        {
+            "name": "Courtesan",
+            "details": ["Your hero's career was one of proffered pleasure. Simple prostitution is one form of this background, perhaps as an ordinary streetwalker, a part-time amateur with bills to pay, or an expensive companion to the wealthy, but other forms of satisfaction exist among the many worlds. Refined artists of conversation and grace command high fees in some societies, while others pay well for the simple company of certain men and women with the right bloodlines, special appearance, or auspicious personal qualities esteemed by their culture."]
+        },
+        {
+            "name": "Criminal",
+            "details": ["Whether thief, murderer, forger, smuggler, spy, or some other variety of malefactor, your hero was a criminal. Some such rogues are guilty only of crossing some oppressive government or offending a planetary lord, while others have done things that no civilized society could tolerate. Still, their ability to deal with the most desperate and dangerous of contacts and navigate the perils of a less-than-legal adventure can make them attractive associates for a party of freebooters bent on profit and glory more than strict legality."]
+        },
+        {
+            "name": "Dilettante",
+            "details": ["Your hero never had a profession, strictly speaking, but spent their formative years in travel, socializing, and a series of engaging hobbies. They might have been the scion of a wealthy industrialist, a planetary noble's younger offspring, or a hanger-on to someone with the money and influence they lacked. By the time your hero's adventures start, they've run through the money that once fueled their lifestyle. Extreme measures may be necessary to acquire further funding."]
+        },
+        {
+            "name": "Entertainer",
+            "details": ["Singers, dancers, actors, poets, writers… the interstellar reaches teem with artists of unnumbered styles and mediums, some of which are only physically possible with advanced technological support. Your hero was a dedicated entertainer, one likely focused in a particular form of art. Patrons and talent scouts can be temperamental, however, and sometimes a budding artist needs to take steps to find their audience. Or at least, to find their audience's money."]
+        },
+        {
+            "name": "Merchant",
+            "details": ["Your hero was or is a trader. Some merchants are mere peddlers and shopkeepers on primitive, low-tech worlds, while others are daring far traders who venture to distant worlds to bring home their alien treasures. The nature of trade varies widely among worlds. On some of them, it's a business of soberly-dressed men and women ticking off trades on virtual terminals, while on others it is a more… active pursuit, requiring the judicious application of monoblades and deniable gunfire against competitors. Sometimes a deal goes bad or capital needs to be raised, and a merchant's natural talents are turned toward the perils of adventure."]
+        },
+        {
+            "name": "Noble",
+            "details": ["Many planets are ruled by a class of nobles, and your hero was a member of one such exalted group. Such planets are often worlds of exquisite courtesy alloyed with utterly remorseless violence, and a misplaced word at the morning levee can result in an executioner's monoblade at noon. Your hero has done something or been the victim of something to dislodge them from their comfortable place at court. Without their familiar allies, wealth, or influence, they must take a new place in the world, however distasteful that claiming might be."]
+        },
+        {
+            "name": "Official",
+            "details": ["Most advanced worlds run on their bureaucracies, the legions of faceless men and women who fill unnumbered roles in keeping the government running as it should. Your hero was one such official. Some were law enforcement officers, others government office clerks or tax officials or trade inspectors. However necessary the work may be, it is often of unendurably tedious nature, and any man or woman with an adventurous spark to their blood will soon find themselves desperate for more exciting use of their talents."]
+        },
+        {
+            "name": "Peasant",
+            "details": ["A technologically-advanced world can usually produce all its necessary foodstuffs and basic resources with a handful of workers, the bulk of the labor being performed by agricultural bots. On more primitive worlds, or those with a natural environment that requires close personal attention to crops, a class of peasants will emerge. These men and women often become chattel, part and parcel of the land they occupy and traded among their betters like the farm equipment of richer worlds. Your hero was not satisfied with that life, and has done something to break free from their muddy and toilsome past."]
+        },
+        {
+            "name": "Physician",
+            "details": ["Bodies wear and break, even on worlds that possess the full resources of advanced postech medicine. Your hero was a physician, one trained to cure the maladies of the body or the afflictions of the mind. Some physicians are conventional health workers, while others are ship's surgeons, military medics, missionary healers of an expanding faith, or dubious slum doctors who'll graft over laser burns with no awkward questions asked. Wherever men and women go into danger, however, the skills of a physician are eagerly sought."]
+        },
+        {
+            "name": "Pilot",
+            "details": ["A pilot's role is a broad one in the far future. The most glamorous and talented navigate starships through the metadimensional storms of interstellar space, while less admired figures fly the innumerable intra-system shuttles and atmosphere craft that serve in most advanced systems. On other worlds, this career might reflect a long-haul trucker, or a horse-riding messenger, or an intrepid sailor on an alien sea. As the Pilot skill covers all these modes of transport, any character whose role revolves around vehicles or riding beasts might justify their selection of this career."]
+        },
+        {
+            "name": "Politician",
+            "details": ["The nature of a political career varies from world to world. On some, it's much like one we'd recognize, with glad-handing voters, loud rallies, and quiet backroom deals with supposed rivals in government. On others, it might involve a great deal more ceremonial combat, appeals to councils of elders, and success at ritual trials. Whatever the details, your hero was a politician in their home culture. Something went wrong, though, and the only way to fix it is to get clear of your constituents for a while and seek some alternative means of advancement."]
+        },
+        {
+            "name": "Scholar",
+            "details": ["Scientists, sages, and professors all qualify under this career. Your hero was one such, a man or woman with a life dedicated to knowledge and understanding. It might have involved the technical expertise of a metadimensional structures engineer or the sacred memorization of the chronicles of some lostworlder sage-order, but your hero's life was in learning. Sometimes that learning cannot be found in familiar surroundings, however, and for one reason or another, willing or not, your hero must venture out into the wider world."]
+        },
+        {
+            "name": "Soldier",
+            "details": ["Whatever the technology or structure of their parent world, a soldier's work is universal. Your hero was a professional fighter, whether that took the form of a barbarian noble's thegn, a faceless conscript in a planetary army, or an elite soldier in the service of a megacorp's private military. Whether it was because they were on the losing side, choosing to leave the service, or being forced to flee a cause they couldn't fight for, they now find themselves navigating a world where their most salable skill is one that can cause them a great deal of trouble."]
+        },
+        {
+            "name": "Spacer",
+            "details": ["Almost every advanced world is highly dependent upon the resources that space flight brings them. Some of this work can be automated, but every really important task needs a flexible human operator to oversee the work. Your hero is one such spacer, either a worker who toils in the sky or a native voidborn man or woman who has spent their entire life outside of natural gravity. It's not uncommon for such workers to find better prospects in places where they can breathe without a vacc suit."]
+        },
+        {
+            "name": "Technician",
+            "details": ["Old things break and new things need to be made. Whether a humble lostworlder blacksmith or an erudite astronautic engineer, your hero made a career out of building and mending the fruits of technology. While almost every society has a need for such services, not all of them treat their providers as generously as a technician might wish. Sometimes, these same talents can be turned toward less licit ends, and a skilled technician's expertise is always useful to an adventuring group that plans to rely on anything more sophisticated than a sharpened stick."]
+        },
+        {
+            "name": "Thug",
+            "details": ["Your hero was a bruiser. They might have had a notional allegiance to some so-called \"army\", or have been part of some crime boss' strong-arm crew, or simply been a private contractor of misfortune for those who failed to pay up. They might have even been a fist in a righteous cause, defending their neighborhood from hostile outsiders or serving as informal muscle for a local leader in need of protection. Whatever the details, they've had to move on from their old life, and their new one is likely to involve a similar application of directed force."]
+        },
+        {
+            "name": "Vagabond",
+            "details": ["A dilettante has money and friends; your hero simply has the road. Whether they were knocked loose from polite society at a young age or have recently found themselves cast out of a familiar life, they now roam the ways of the world and the spaces between. Some heroes find this life satisfying, with its constant novelty and the regular excitement of bare survival. Others long for a more stable arrangement, and are willing to lend their pragmatic talents to a group that offers some prospect of profit."]
+        },
+        {
+	    "name": "Worker",
+	    "details": ["Countless in number, every industrialized world has swarms of workers to operate the machines and perform the labor that keeps society functioning. Cooks, factory laborers, mine workers, personal servants, lawyers, clerks, and innumerable other roles are covered under this career. If your hero rolls or picks Work as a skill but has a career that would better fit another existing skill, they may substitute it accordingly. Thus, a wage-slave programmer might take Program instead of Work, while a lawyer would use Administer instead as a reflection of their litigious talent."]
         }
     ],
     "foci": [
@@ -562,6 +665,405 @@ var staticData = {
             "<b>Level-3</b>: The psychic can teleport up to 1,000 kilometers.",
             "<b>Level-4</b>: The psychic can teleport anywhere on a planet’s surface or near orbit."
             ]
+        }
+    ],
+    "techniques": [
+        {
+            "name": "Mastered Succor",
+            "skill": "Biopsion",
+            "level": 1,
+            "details": ["The biopsion has developed a sophisticated mastery of their core ability, and they no longer need to Commit Effort to activate it, and may use it whenever they wish. The use of additional techniques that augment Psychic Succor might still require Effort to be Committed."]
+        },
+        {
+            "name": "Organic Purification Protocols",
+            "skill": "Biopsion",
+            "level": 1,
+            "details": ["The biopsion’s Psychic Succor now cures any poisons or diseases the subject may be suffering. Biowarfare organisms or TL5 toxins may resist this curing, requiring a Wis/Biopsion skill check at a difficulty of at least 10. Failure means that the adept cannot cure the target."]
+        },
+        {
+            "name": "Remote Repair",
+            "skill": "Biopsion",
+            "level": 1,
+            "details": ["Psychic Succor and other biopsionic techniques that normally require touch contact can now be applied at a distance up to 100 meters, provided the biopsion can see the target with their unaided vision. Hostile powers that normally require a hit roll will hit automatically. Each time this technique is used, Effort must be Committed for the scene."]
+        },
+        {
+            "name": "Invincible Stand",
+            "skill": "Biopsion",
+            "level": 2,
+            "details": ["The biopsion has mastered techniques of emergency tissue reinforcement and system stabilization. As an Instant action, they can Commit Effort for the scene to keep themself or a target they can touch active even at zero hit points. This technique must be used once every round on the target or they collapse at the end of the round. If the target suffers hit point damage, the biopsion must Instantly Commit Effort for the scene or the target goes down immediately with a mortal wound. A Heavy weapon hit on a subject of this power or similar physical dismemberment will always kill a target, regardless of this technique."]
+        },
+        {
+            "name": "Major Organ Restoration",
+            "skill": "Biopsion",
+            "level": 2,
+            "details": ["The biopsion’s Psychic Succor can now cure congenital birth defects and regrow missing limbs and organs. It can even be used to stabilize targets that have been dropped by Heavy weapons, decapitated, or otherwise dramatically dismembered, provided it’s used within one round per level of Biopsionic skill. The best that can be done for such badly-mangled targets is stabilization, after which they must rest for 24 hours before any further hit points can be healed."]
+        },
+        {
+            "name": "Tissue Integrity Field",
+            "skill": "Biopsion",
+            "level": 2,
+            "details": ["The biopsion’s Psychic Succor may now also affect all allies within ten meters of the target. Allies can decline the healing if they don’t require it or don’t want to take the additional System Strain. Each use of this technique requires that the biopsion Commit Effort for the day in addition to the cost of the Psychic Succor."]
+        },
+        {
+            "name": "Accelerated Succor",
+            "skill": "Biopsion",
+            "level": 3,
+            "details": ["The biopsion’s Psychic Succor now can be used as an On Turn power, albeit only once per round. By Committing an additional Effort for the day with each use, it can even be used as an Instant power, though it still can only be used once per round. Any surcharges for augmenting the succor apply normally, such as with Tissue Integrity Field or Major Organ Restoration."]
+        },
+        {
+            "name": "Metamorph",
+            "skill": "Biopsion",
+            "level": 3,
+            "details": [
+                "The biopsion can now shape their own or another willing target’s physical form as a Main Action, transforming a touched target into any humanoid form within 50% of their own mass. Claws and other body armaments can be fashioned equivalent to Light or Medium melee weapons, or innate armor equivalent to AC 13. Gills and other environmental-survival alterations are also viable at the GM’s discretion, but flight is a bridge too far for this power.",
+                "A target can be impersonated down to the DNA level, provided a blood or hair sample is available. The use of this adds one System Strain point to the target that does not recover so long as the change is in effect. Applying this power to a target requires that the biopsion Commit Effort for as long as the change is to be maintained. If applied to another target, the power automatically ends if the psychic gets more than one hundred kilometers away."
+            ]
+        },
+        {
+            "name": "Teratic Overload",
+            "skill": "Biopsion",
+            "level": 3,
+            "details": ["This use of biopsionics inflicts potentially-lethal damage on a touched target as a Main Action, and requires that the biopsion Commit Effort for the scene. The target suffers 1d6 damage per level of the psychic’s Biopsion skill and must make a Physical saving throw. On a failure, the damage is tripled and the target is now affected by an obvious, lethal cancer that will kill them in 1d6 months. The cancer can be treated by a TL4 hospital or ship’s sick bay if managed within a month’s time. If the biopsion Commits Effort for the day instead of the scene, they can control the power sufficiently to do no hit point damage and create very subtle tumors, leaving the cancer undetectable without a TL4 medical examination. Such victims probably won’t even know they’ve been attacked by this power. Whether a success or failure, this power cannot be used on the same target more than once per scene."]
+        },
+        {
+            "name": "Holistic Optimization Patterning",
+            "skill": "Biopsion",
+            "level": 4,
+            "details": ["The biopsion gains the ability to drastically augment their own or a touched ally’s physical abilities as an On Turn action. This boost lasts for the rest of the scene, adds two points of System Strain to the target and gives them a +2 bonus to all Strength or Dexterity skill checks, hit rolls, and damage rolls along with 20 extra hit points. Any damage is taken off these temporary hit points first, and both the bonuses and any hit points in excess of the target’s maximum are lost at the end of the scene. Each invocation of this technique requires the biopsion to Commit Effort for the day, and this power cannot be used on a given target more than once per scene."]
+        },
+        {
+            "name": "Quintessential Reconstruction",
+            "skill": "Biopsion",
+            "level": 4,
+            "details": ["The biopsion becomes extremely difficult to kill, encoding their mind in a coherent pattern of MES energy coterminous with their realspace coordinates. If killed, the psychic will regenerate from the largest remaining fragment of their body over 24 hours. This process maximizes their System Strain for one week. If brought to zero hit points during this week, they die instantly and permanently. The psychic retains a vague awareness of their surroundings while “dead” and can postpone their regeneration for up to a week in order to avoid notice, but burial or entombment may result in a very short second life. Each use of this power inflicts one point of permanent attribute loss in an attribute of the biopsion’s choice."]
+        },
+        {
+            "name": "Cloak Powers",
+            "skill": "Metapsion",
+            "level": 1,
+            "details": ["The metapsion can conceal their own psychic abilities from metapsionic senses. They must Commit Effort for as long as they wish to cloak their powers. While hidden, only a metapsion with equal or higher skill in Metapsion can detect their abilities with their level-0 or level-2 Psychic Refinement abilities. In such cases, an opposed Wis/Metapsion roll is made between the metapsion and the investigator. If the investigator wins, the cloak is pierced, while if the metapsion wins, the investigator’s Psychic Refinement remains oblivious."]
+        },
+        {
+            "name": "Mindtracing",
+            "skill": "Metapsion",
+            "level": 1,
+            "details": ["The metapsion can trace back the use of psionic powers they’ve noticed in their presence. By Committing Effort for the scene as an Instant action, they can see and hear through the senses of a user of a psychic power, gaining an intuitive awareness of their location and treating them as a visible target for purposes of their own abilities. Thus, if they see someone being affected by a telepathy power with no visible source, they can use this ability to briefly share the hidden telepath’s senses. If used on a target that is teleporting, they can perceive the teleporter’s view of their destination. Use on a metamorphically-shaped impostor would reveal the biopsion responsible for the change, and so forth. These shared senses last for only one round and do not interfere with the adept’s other actions."]
+        },
+        {
+            "name": "Synthetic Adaptation",
+            "skill": "Metapsion",
+            "level": 1,
+            "details": [
+                "This is a particularly esoteric technique, one that requires the adept to have at least Program-0 or Fix-0 skill in order to master. With it, however, the metapsion has learned how to synergize with the quantum intelligence of a VI or True AI in order to apply Telepathy or Biopsion powers to their inanimate corpus. Only intelligent machines can be affected, as the technique requires a sentient mind to catalyze the effect.",
+                "This synergy takes much of its force from the adept. Any System Strain the powers might inflict must be paid by the adept rather than the target."
+            ]
+        },
+        {
+            "name": "Neural Trap",
+            "skill": "Metapsion",
+            "level": 2,
+            "details": ["The metapsion allows a hostile psychic into their mental sanctum in order to gain a later advantage. When targeted by a hostile psionic power that allows a save, the metapsion may Commit Effort as an Instant action and voluntarily fail the saving throw, accepting the effect. The next psychic power the user targets at that assailant then allows the victim no saving throw. This technique lasts until the metapsion makes their psychic attack or reclaims their Committed Effort. A hostile psychic may be affected by only one Neural Trap from a given psychic at a time."]
+        },
+        {
+            "name": "Psychic Static",
+            "skill": "Metapsion",
+            "level": 2,
+            "details": ["As an Instant action, the metapsion may Commit Effort for the day to negate a perceived psychic power. The psychic responsible for the effect must Commit Effort for the day as an Instant action to resist this negation, otherwise the power ends and any action used to trigger it is wasted. The PC may then Commit Effort for the day again, with each spending and counter-spending until one runs out of Effort or chooses to stop. NPCs who don’t track Effort automatically lose the power. Psychic Static can be applied only once per round to any particular power."]
+        },
+        {
+            "name": "Suspended Manifestation",
+            "skill": "Metapsion",
+            "level": 2,
+            "details": ["The metapsion is capable of \"hanging\" a psychic power in their brain, forming the energy patterns and then suspending them in a self-sustaining loop until it's time to trigger their release. The psychic must Commit Effort for the day to hang a power, along with the Effort normally necessary to trigger it. None of this Effort can be recovered until the power is expended, after which it recovers at its usual speed. Activating the power is an Instant action, or an On Turn action if it allows the target a saving throw of some kind. Only one ability can be held suspended at any one time."]
+        },
+        {
+            "name": "Concert of Minds ",
+            "skill": "Metapsion",
+            "level": 3,
+            "details": ["As an On Turn action, the metapsion may Commit Effort and form a psychic gestalt with one or more willing psychics within three meters, including up to one other psychic per Metapsion skill level. This gestalt persists as long as the Effort remains committed, regardless of the subsequent distance between psychics. On their own turn, any member of the gestalt may use any power or technique known by any other member, using the other member’s skill levels as necessary and paying any Effort cost from their own pool. This gestalt shares only psychic power, not thoughts or senses. At the end of each round in which one or more members have used some other member’s powers or abilities on their turn of action, the metapsion must Commit Effort for the scene or the gestalt drops and cannot be re-established for the rest of the scene."]
+        },
+        {
+            "name": "Metadimensional Friction",
+            "skill": "Metapsion",
+            "level": 3,
+            "details": ["As a Main Action, the metapsion Commits Effort for the scene to create localized MES turbulence around a visible target psychic within 200 meters. Each time the target Commits Effort or an NPC uses a psychic power, they suffer 1d8 damage per Metapsion skill level of the adept. Each time the target suffers the damage they can attempt a Mental saving throw to throw off the effect. It lasts no longer than the rest of the scene at most. Only one application of this friction can affect a target at once."]
+        },
+        {
+            "name": "Psychic Tutelage ",
+            "skill": "Metapsion",
+            "level": 3,
+            "details": [
+                "An expert metapsion can modulate and temper the metadimensional energy that surges through an untrained psychic's mind. This \"safety buffer\" allows the novice to experiment with their abilities and gradually develop the control they need to channel their powers without causing permanent brain damage. Without this technique, it is virtually impossible to turn a normal with untapped potential into a trained psychic.",
+                "An adept with Metapsion-3 skill can train up to ten pupils at once. One with Metapsion-4 can train up to one hundred. It requires only a week to train a potential in ways to avoid accidentally triggering their powers and suffering the damage that follows, but actually teaching them to use their powers effectively takes anywhere from one to four years depending on their natural aptitude and the availability of other psychics willing to assist the metapsion in the training process."
+            ]
+        },
+        {
+            "name": "Surge Momentum ",
+            "skill": "Metapsion",
+            "level": 3,
+            "details": [
+                "The metapsion's abilities can be reinforced with a degree of metadimensional energy that would cause substantial dmage to a less adept mind. Particularly weak or unprepared minds might be completely crushed by the force of the adept's augmented will.",
+                "The adept must Commit Effort for the day when using a power that normally grants its target a saving throw. The target then suffers a penalty equal to the adept's Metapsion skill on any saving throw normally granted by the power. If the target's hit die total or character level is less than half the adept's level, rounded up, they automatically fail their saving throw."
+            ]
+        },
+        {
+            "name": "Flawless Mastery ",
+            "skill": "Metapsion",
+            "level": 4,
+            "details": ["When this technique is learned, the adept may choose one technique from any discipline they know. That technique no longer requires Effort to be Committed in any way, though techniques that augment it may still exact a cost. If it has a duration based on Committed Effort then it lasts until the metapsion chooses to end it or is killed. This technique may only be mastered once, though the perfected technique may be changed with a month of meditation and practice."]
+        },
+        {
+            "name": "Impervious Pavis of Will ",
+            "skill": "Metapsion",
+            "level": 4,
+            "details": ["When this technique is learned, the metapsion must choose a discipline. They then become entirely immune to unwanted powers from that discipline; they and their abilities are simply not valid targets for purposes of that discipline’s powers unless the adept chooses to be affected. By Committing Effort for the day as an Instant action, they can extend this immunity for a scene to all allies within 50 meters. This technique may be learned more than once, and any shared protection applies to all disciplines negated by the adept."]
+        },
+        {
+            "name": "Intuitive Response ",
+            "skill": "Precognition",
+            "level": 1,
+            "details": ["As an Instant action, the precog can Commit Effort for the scene just before they roll Initiative. Their Initiative score is treated as one better than anyone else’s involved in the scene. If another participant has this power, roll Initiative normally to determine which of them goes first, and then the rest of the combatants act. This ability cannot be used if the precog has been surprised."]
+        },
+        {
+            "name": "Terminal Reflection",
+            "skill": "Precognition",
+            "level": 1,
+            "details": ["The psychic’s Oracle power automatically triggers as an Instant action moments before some unexpected danger or ambush, giving the precog a brief vision of the impending hazard. This warning comes just in time to avoid springing a trap or to negate combat surprise for the precog and their companions. If the psychic does not immediately Commit Effort for the day, this sense goes numb and this technique cannot be used for the rest of the day."]
+        },
+        {
+            "name": "Alternate Outcome",
+            "skill": "Precognition",
+            "level": 2,
+            "details": ["The precog can sense impending failure and attempt to salvage the action. As an Instant action, the precog can target a visible ally or their own self and Commit Effort for the day to allow the target to reroll a failed hit roll, saving throw, or skill check, taking the better of the two rolls. This power disrupts delicate lines of probability, however, and cannot be used on any given target more than once a day."]
+        },
+        {
+            "name": "Destiny's Shield",
+            "skill": "Precognition",
+            "level": 2,
+            "details": ["The precog observes an incoming injury and tries to find an alternate future in which the attack misses. As an Instant action, the precog can Commit Effort for the day to force an attacker to reroll a successful hit roll. This technique only works on attacks against the psychic’s person, not against attacks aimed at a vehicle they’re occupying or harm that doesn’t involve an attack roll. If the rerolled attack still hits, however, the damage done is maximized. This technique can be used only once per incoming attack."]
+        },
+        {
+            "name": "Anguished Vision",
+            "skill": "Precognition",
+            "level": 3,
+            "details": [
+                "The adept's precognition is sophisticated enough to clearly foresee several seconds into the future. As an Instant action, the psychic may Commit Effort for the day and declare that what they have just done or seen is a vision of the immediate future. Time rolls back to the start of the initiative count in a combat turn, or six seconds earlier if out of combat. Nothing that happened during that round has really come to pass yet.",
+                "This ability is tremendously draining, and can be used only once per day."
+            ]
+        },
+        {
+            "name": "Cursed Luck ",
+            "skill": "Precognition",
+            "level": 3,
+            "details": ["Negative probabilities are woven tightly around a visible animate target, including robots and animals but not including vehicles. Triggering this technique requires a Main Action and Committing Effort for the scene. The target must roll any attack rolls, damage rolls, skill checks, and saving throws twice and take the worst result each time. Any attempts to hit the target or damage dice rolled against it may be rolled twice and the better result taken. Intelligent targets can make a Mental saving throw at the end of each round to throw off the effect; this save is not penalized by the power."]
+        },
+        {
+            "name": "Forced Outcome ",
+            "skill": "Precognition",
+            "level": 3,
+            "details": ["Through careful manipulation of probability, the adept can influence random physical events in their vicinity. Triggering this technique requires a Main Action and Committing Effort for the scene. Any simple, random mechanical outcome can be completely controlled for the scene, such as a roulette wheel or the order of a deck of shuffled cards. Any other physical event in the area that seems not-entirely-implausible may be made to occur by this technique, provided it doesn’t involve more than a few objects and doesn’t require human involvement. The GM decides what random events are and are not adequately possible. Anything more than one unusual coincidence or chance per scene is likely impossible to produce."]
+        },
+        {
+            "name": "Not My Time",
+            "skill": "Precognition",
+            "level": 4,
+            "details": ["The precog instinctively wrenches the lines of probability away from futures in which they are about to die. This technique triggers automatically when the precog is about to die, provided they can Commit Effort for the day. On triggering, random events somehow conspire to leave the precog alive, even if outrageous coincidences and ridiculous luck are required. Provided the precog doesn’t intentionally thrust herself back into danger, their life is secured for the next few minutes at least, though there’s no guarantee the psychic will survive intact in mind or body. This technique can trigger no more often than once per week."]
+        },
+        {
+            "name": "Prophecy",
+            "skill": "Precognition",
+            "level": 4,
+            "details": ["The power of the precog extends to dictating future events that directly involve them. The precog may make one prediction involving them personally within the next year. Provided they take reasonable measures to enable this prediction, that no direct resistance is mounted by an enemy, and that the prediction doesn’t seem highly improbable to the GM, it will come to pass. The adept must Commit Effort when this power is used, and the Effort remains Committed until the prophecy comes to pass or is abandoned. This ability cannot be used more than once per month and only one prophecy may be active at a time."]
+        },
+        {
+            "name": "Kinetic Transversal ",
+            "skill": "Telekinesis",
+            "level": 1,
+            "details": ["The adept may Commit Effort as an On Turn action to move freely over vertical or overhanging surfaces as if they were flat ground, crossing any solid surface strong enough to bear five kilos of weight. They can also move over liquids at their full movement rate. This movement ability lasts as long as the Effort is committed."]
+        },
+        {
+            "name": "Pressure Field ",
+            "skill": "Telekinesis",
+            "level": 1,
+            "details": ["As an Instant action, the adept can manifest a protective force skin around their person equivalent to a vacc suit, maintaining pressure and temperature even in hard vacuum conditions. They can ignore temperatures at a range of plus or minus 100 degrees Celsius and automatically pressurize thin atmospheres for breathability, or filter particulates or airborn toxins. By Committing Effort for the scene, they can shield up to six comrades. This lasts until the user can and does reclaim the Effort."]
+        },
+        {
+            "name": "Telekinetic Armory ",
+            "skill": "Telekinesis",
+            "level": 1,
+            "details": [
+                "The adept may Commit Effort as an On Turn action to create weapons and armor out of telekinetic force. These weapons act as a rifle or an advanced melee weapon. Attack rolls use the better of the psychic’s Dexterity, Wisdom, or Constitution modifiers, and use the user’s Telekinesis skill level in place of Shoot or Stab.",
+                "Armor may be created as part of this power, granting the psychic a base armor class equal to 15 plus their Telekinesis skill level. This armor does not stack with conventional armor, but Dexterity modifies it as usual. The weapons and armor continue to exist as long as the psychic chooses to leave the Effort committed, and they may be invisible or visible at the psychic’s discretion."
+            ]
+        },
+        {
+            "name": "Impact Sump ",
+            "skill": "Telekinesis",
+            "level": 2,
+            "details": ["The adept may Commit Effort for the day as an Instant action to negate a single instance of physical damage. This ability is too taxing to be used more than once per day, but as an Instant action, it can be triggered even after damage is rolled."]
+        },
+        {
+            "name": "Skid Field ",
+            "skill": "Telekinesis",
+            "level": 2,
+            "details": ["As a Main Action, the psychic Commits Effort for the scene and alters the friction at a point in sight up to ten meters in diameter, making it extremely difficult for enemies to move from their current position. All chosen targets must make an Evasion saving throw or fall prone, becoming unable to stand up or move more than a meter per Move action taken. If used against a ground vehicle, the driver must make a Dex/Pilot skill check at a difficulty of 8 plus the adept’s Telekinesis skill or go out of control, driving directly forward for a round and crashing into any obstacles. Targets who save are immune to this technique for the scene."]
+        },
+        {
+            "name": "Telekinetic Expertise",
+            "skill": "Telekinesis",
+            "level": 2,
+            "details": ["The adept has become familiar enough with the manipulation of telekinetic force that they may now use Telekinetic Manipulation without Committing Effort."]
+        },
+        {
+            "name": "Thermokinesis",
+            "skill": "Telekinesis",
+            "level": 2,
+            "details": [
+                "Telekinetic power involves kinetic energy, but a sufficiently sophisticated grip on motion can be used to agitate the molecules of an inanimate object and cause it to melt or burst into flame. Similar focus can chill or freeze such substances.",
+                "Applying Thermokinesis to a target requires that the adept Commit Effort for the scene as a Main Action. Thermokinesis cannot affect objects larger than the adept could lift with their Telekinetic Manipulation. It cannot be applied to only part of a too-large single object.",
+                "As with other telekinetic powers, this ability does not work on objects being held or used by intelligent creatures. Non-sentient robots take 1d8 damage per level of Telekinesis skill each time this technique is applied to them."
+            ]
+        },
+        {
+            "name": "Tangible Force Construct ",
+            "skill": "Telekinesis",
+            "level": 3,
+            "details": ["As an On Turn action, the psychic can Commit Effort for the scene to create a telekinetic force construct at a visible point, provided it can fit within a three-meter cube. The force construct can be shaped in any way the psychic wishes, and can remain fixed in its location without external supports if desired. It is as sturdy as a TL4 construction and may be visible or invisible at the adept’s choice. The construct lasts until the end of the scene, until the psychic dispels it, or until it is smashed."]
+        },
+        {
+            "name": "Telekinetic Ram ",
+            "skill": "Telekinesis",
+            "level": 3,
+            "details": ["As a Main Action, the psychic can Commit Effort for the scene to target a tremendous, uncontrolled burst of force at a single target within sight. This burst requires some time to detonate, however, and will only go off at the end of the next round. Targets of this technique are aware of an oppressive, electrical tingling in the air and are apt to instinctively move; this technique is thus generally useless against any target that is not entirely immobile, as any movement of a chosen target disrupts the ram. Once the ram detonates, however, it is sufficient to destroy any immobile civilian vehicle, create a five-meter hole in anything short of hardened military fortifications, or inflict 5d12 damage on anything else as if it were struck by a Heavy weapon."]
+        },
+        {
+            "name": "Reactive Telekinesis ",
+            "skill": "Telekinesis",
+            "level": 3,
+            "details": ["As an Instant, the psychic can Commit Effort for the scene whenever an assailant misses them with a physical attack. The attack is then reflected back against the assailant, who must reroll the attack against their own person twice. If either roll hits, the assailant suffers damage from their own attack. If both rolls hit, the damage is the maximum possible."]
+        },
+        {
+            "name": "Force Puppetry",
+            "skill": "Telekinesis",
+            "level": 4,
+            "details": ["As a Main Action, the telekinetic can Commit Effort for the day to suborn a visible target’s mobility, whether robotic, vehicular, or human, provided it’s no larger than a ground car. A sapient victim can make a Mental saving throw to resist the psychic onslaught; on a failure, they lose control of their physical actions. If not piloted by the telekinetic, the target remains motionless or continues on its current direction of travel. If the telekinetic spends a Main Action to control them, they can be made to perform any physical action that is not directly suicidal, using the psychic’s skill levels and hit bonus for any attacks or skill checks they might make. The puppetry lasts until the end of the scene, until the target leaves the psychic’s sight, or until a sapient target believes that their action or inaction is about to get them killed. The psychic’s control is fine enough to achieve even very delicate physical motions, but it is not good enough to control the target’s speech- though it can keep them silent."]
+        },
+        {
+            "name": "Telekinetic Glide ",
+            "skill": "Telekinesis",
+            "level": 4,
+            "details": ["As an Instant action, the telekinetic can Commit Effort to begin gliding, and may extend this effect to up to a half-dozen unresisting, human-sized allies within 30 meters. While gliding, the psychic can move at their normal movement rate in any direction, though they cannot gain altitude unless they physically climb or are lifted by air currents. They can plunge earthward at up to terminal velocity without harm, and even orbital insertions are survivable with this power if a vacc suit is available or the Pressure Field technique is used. Allies must remain within 30 meters of the psychic to maintain this gliding. As an Instant, this power may be triggered in time to negate falling damage. The gliding lasts for as long as the Effort remains Committed."]
+        },
+        {
+            "name": "Facile Mind",
+            "skill": "Telepathy",
+            "level": 1,
+            "details": ["The telepath is practiced at opening a Telepathic Contact, and need only Commit Effort for the scene to do so, instead of Committing Effort for the day. If contacting an ally who has practiced the process with the psychic for at least a week, opening the contact normally requires no Effort at all. In both cases, if the telepath chooses to Commit Effort for the day, they can open a Telepathic Contact as an Instant action rather than a Main Action."]
+        },
+        {
+            "name": "Transmit Thought ",
+            "skill": "Telepathy",
+            "level": 1,
+            "details": ["The telepath can send thoughts and images over a Telepathic Contact, allowing two-way communication with a willing target as an Instant action when desired."]
+        },
+        {
+            "name": "Far Thought",
+            "skill": "Telepathy",
+            "level": 2,
+            "details": ["Once a telepath has made a Telepathic Contact with a target, they can thereafter activate the technique whenever that target is within 100 kilometers, whether or not the psychic knows where they are. At Telepathy-3 the range increases to 1,000 kilometers, and at Telepathy-4 it extends over an entire planet and up to orbital distances. This distant connection is tenuous, however, and the psychic cannot use any technique through it that would allow the target a saving throw to resist."]
+        },
+        {
+            "name": "Suppress Cognition",
+            "skill": "Telepathy",
+            "level": 2,
+            "details": ["Through intense focus, the telepath can make the target of a Telepathic Contact simply not think about something, whether that’s the presence of the telepath, the possibility of committing violence, the absence of important documentation, or any other single potential action or one specific person. This technique requires the psychic to Commit Effort for the scene as a Main Action. The target gets a Mental saving throw to resist this power and become immune to it for the scene. If failed, the thought remains unthinkable for the rest of the scene unless the target perceives physical danger or a traumatic threat to something they prize highly. In that case, the block instantly dissolves and cannot be re-established during the scene. Once the effect ends, the target will remain oblivious to their temporary fugue unless it is brought to their attention somehow."]
+        },
+        {
+            "name": "Reflex Response ",
+            "skill": "Telepathy",
+            "level": 3,
+            "details": ["As a Main Action, the telepath can Commit Effort for the day to force a sudden, irrational impulse into the target of a Telepathic Contact. The target may make a Mental saving throw to resist; on a failure, they will use their next available action to carry out the impulse to the best of their ability. This impulse cannot be self-injurious or harmful to a loved one, but it can be foolish, reckless, or harmful to others. The target may not understand why they have done the action, but will usually attempt to rationalize it as their choice."]
+        },
+        {
+            "name": "Telepathic Assault ",
+            "skill": "Telepathy",
+            "level": 3,
+            "details": ["The telepath Commits Effort for the day as a Main Action to force a wave of metadimensional energy through the brain of a Telepathic Contact target. The assault does 6d6 damage, or 9d6 damage if the telepath has Telepathy-4 skill. The target may make a Mental saving throw to halve the damage. This assault cannot kill a target, but can knock them unconscious for an hour if they’re reduced to zero hit points, after which they wake up with one hit point. A victim cannot be targeted by an assault more than once per scene."]
+        },
+        {
+            "name": "Memory Editing",
+            "skill": "Telepathy",
+            "level": 4,
+            "details": ["The telepath can make simple edits to the memory of a target currently linked by a Telepathic Contact. Events of no more than 24 hours in duration can be erased from memory, conversations can be created or changed, new events can be added to a day, or other similar alterations made. The psychic can make these changes as a Main Action by Committing Effort for the day. If the psychic doesn’t have a good understanding of the memories they’re changing, such as might be granted by the level-4 degree of Telepathic Contact, the edits they make may not fit well. The target gets a Mental saving throw to resist editing for the rest of the scene, but on a failure, they will not notice the changed memories until given a reason to recollect them."]
+        },
+        {
+            "name": "Unity of Thought ",
+            "skill": "Telepathy",
+            "level": 4,
+            "details": ["The telepath becomes exceptionally skilled at weaving together multiple allied minds. When they establish a Telepathic Contact with a willing ally they may bind up to six willing participants into the same contact without further Effort. This multi-person link is relatively shallow, and allows only the Instant exchange of thoughts, images, and sensory impressions. While under its effect, every participant knows the exact location and condition of all others, and uses the best Initiative roll of any of them if combat commences. At the table, up to five minutes of discussion and coordination among the players can be arranged each round without incurring delays for the PCs. Every combat turn, one gestalt member of the psychic's choice gets an extra round of action to represent the benefits of the perfect coordination of the group. The psychic cannot gain this bonus round himself. The telepathic link lasts as long as the psychic maintains the contact, and it has a range that extends to any point within a solar system."]
+        },
+        {
+            "name": "Proficient Apportation",
+            "skill": "Teleportation",
+            "level": 1,
+            "details": ["Personal Apportation now counts as a Move action, though it still can be performed only once per round. Apportations of 10 meters or less no longer require Effort to be Committed, though any augments to the technique must still be paid for normally."]
+        },
+        {
+            "name": "Spatial Awareness",
+            "skill": "Teleportation",
+            "level": 1,
+            "details": ["The psychic may Commit Effort as an On Turn action to gain an intuitive awareness of their physical surroundings. The sense is roughly equivalent to sight out to 100 meters, though it cannot read text or distinguish colors. It is blocked by solid objects but is unimpeded by darkness, mist, blinding light, holograms, or optical illusions. The sense lasts as long as the Effort remains Committed to the technique."]
+        },
+        {
+            "name": "Burdened Apportation ",
+            "skill": "Teleportation",
+            "level": 2,
+            "details": ["The psychic can carry willing companions with them when using Personal Apportation. Up to three human-sized companions and their man-portable gear may be carried per skill level in Teleportation. Allies must be within 3 meters of the teleporter to be carried along. Ordinary inert matter cannot be carried along unless the psychic is touching it or it’s being carried by an ally affected by this power. If carrying inert mass, up to two hundred kilos of objects can be carried per skill level. Using this technique increases the Effort cost of Personal Apportation, requiring that an extra point of Effort be Committed for the day."]
+        },
+        {
+            "name": "Perceptive Dislocation ",
+            "skill": "Teleportation",
+            "level": 2,
+            "details": ["Commit Effort for the day to see any location the psychic could teleport to. The sight lasts for fifteen mi"]
+        },
+        {
+            "name": "Spatial Synchrony Mandala",
+            "skill": "Teleportation",
+            "level": 2,
+            "details": ["The psychic imprints a particular object or person on their psionic awareness. Provided the object is relatively intact and in range of their Personal Apportation, the psychic always knows its exact location and can teleport to within three meters of it with Personal Apportation even if it has moved from its original location. Imprinting an object requires an hour’s meditation, and only one object can be imprinted at a time. If imprinting on a person, the target must be willing and cooperative to make the imprint. Objects must be at least one kilogram in mass to be effectively tracked."]
+        },
+        {
+            "name": "Effortless Apportation ",
+            "skill": "Teleportation",
+            "level": 3,
+            "details": ["The psychic does not need to Commit Effort to use Personal Apportation. If the technique is augmented by other techniques that come with their own extra cost, however, this extra cost must still be paid."]
+        },
+        {
+            "name": "Stutterjump",
+            "skill": "Teleportation",
+            "level": 3,
+            "details": ["The psychic can instinctively micro-teleport away from incoming danger. As an On Turn action they may Commit Effort to begin shifting their spatial position away from attacks, gaining a base armor class of 20 so long as the Effort remains Committed. This armor class is not modified by physical armor or Dexterity modifiers, and the micro-jumps do not significantly move the psychic from their current location. While Stutterjump is active, as an Instant action the adept may Commit Effort for the day to negate a successful hit by a weapon attack, even after damage has been rolled. This reflexive defensive jump may be used only once per day and leaves the psychic just outside the radius of explosions or other area-effect attacks."]
+        },
+        {
+            "name": "Rift Reduplication ",
+            "skill": "Teleportation",
+            "level": 3,
+            "details": [
+                "Expert teleporters can be infuriatingly difficult to pin down. By Committing an additional Effort for the day as an Instant action, the adept can use Personal Apportation as an On Turn action, even if they've already used it once this round. Apporting itself costs whatever Effort it normally would, in addition to any techniques that augment it. Rift Reduplication can only be triggered once per round.",
+                "If the adept uses their powers to teleport into a location, perform an action, and then use Rift Reduplication to teleport back out, onlookers in the area will not have time to react to their action or attack the adept unless they onlookers have held their action explicitly to counter the psychic. Enemies who hold their action this way waste it entirely if the psychic does not give them a chance to attack or otherwise interfere. Such a lightning strike may be surprising to onlookers, but it doesn't allow enough preparation time to count as a surprise attack as described on page XX."
+            ]
+        },
+        {
+            "name": "Deep Intrusion",
+            "skill": "Teleportation",
+            "level": 4,
+            "details": ["The adept can use Personal Apportation to blind-teleport into a building, structure, vehicle, or spaceship visible to them, including spaceships close enough to engage in conventional ship-to-ship combat. They intuitively seek out a space large enough to hold them and without immediate environmental hazards, but cannot control their precise destination. Using this technique in conjunction with Personal Apportation is very draining to the psychic, and requires that they Commit an additional Effort point for the day."]
+        },
+        {
+            "name": "Offensive Apportation",
+            "skill": "Teleportation",
+            "level": 4,
+            "details": ["The psychic can use Personal Apportation as a Main Action to teleport an unwilling target, provided the user can make physical contact with them. Contact with an unsuspecting or incapacitated target is automatic, while touching a resisting enemy requires a Punch hit roll with a bonus equal to the psychic’s Teleportation skill. If the psychic does not use the Burdened Apportation technique then only the target is teleported; otherwise the user may go along with them. The psychic cannot teleport a target to any location they could not teleport to, including locations of imminent environmental danger, such as high in the air, into a windowless tomb, or into the middle of a sea. A conscious, resisting target can make a Mental saving throw to forcibly abort the teleportation, rolling at a penalty equal to the psychic’s Teleportation skill. Use of this technique adds to the cost of Personal Apportation, requiring the psychic Commit an additional point of Effort for the day whether the touch hits or not."]
         }
     ],
     "armor": [
@@ -1874,7 +2376,7 @@ function isPartialExpert() {
 
 // change to check skill type in data (or change how this is queried)
 function isPsychicSkill(name) {
-    return name == "Biopsionics" || name == "Metapsionics" || name == "Precognition" || name == "Telekinesis" || name == "Telepathy" || name == "Teleportation";
+    return name == "Biopsion" || name == "Metapsion" || name == "Precognition" || name == "Telekinesis" || name == "Telepathy" || name == "Teleportation";
 }
 
 /******************************************************************************
@@ -1906,12 +2408,12 @@ function updateStatModifiers() {
     dynData.statmods.wis = getModifierForStat(charData.stats.wis);
     dynData.statmods.con = getModifierForStat(charData.stats.con);
     dynData.statmods.cha = getModifierForStat(charData.stats.cha);
-    setContentByID("strmod", dynData.statmods.str);
-    setContentByID("intmod", dynData.statmods.int);
-    setContentByID("dexmod", dynData.statmods.dex);
-    setContentByID("wismod", dynData.statmods.wis);
-    setContentByID("conmod", dynData.statmods.con);
-    setContentByID("chamod", dynData.statmods.cha);
+    setContentByID("strmod", getModString(dynData.statmods.str));
+    setContentByID("intmod", getModString(dynData.statmods.int));
+    setContentByID("dexmod", getModString(dynData.statmods.dex));
+    setContentByID("wismod", getModString(dynData.statmods.wis));
+    setContentByID("conmod", getModString(dynData.statmods.con));
+    setContentByID("chamod", getModString(dynData.statmods.cha));
 }
 
 function updateAttackBonus() {
@@ -1966,14 +2468,14 @@ function updateDerivedValues() {
 }
 
 /******************************************************************************
-                     Functions to update detail blocks
+   Functions to update detail blocks that can be directly changed by the user
 ******************************************************************************/
 
 function updateClassDetails() {
     var detailstext = "<ul>";
     if (isFullExpert()) {
         detailstext += "<li>You gain a free level in a non-combat focus related to your background. Most concepts will take Specialist in their main skill, though Diplomat, Starfarer, Healer, or some other focus might suit better. You may not take a combat-oriented focus with this perk. In case of uncertainty, the GM decides whether or not a focus is permitted.</li>";
-        detailstext += "<li>Once per scene, you can reroll a failed skill check, taking the new roll if it’s better.</li>";
+        detailstext += "<li><b>Once per scene, you can reroll a failed skill check, taking the new roll if it’s better.</b></li>";
         detailstext += "<li>When you advance an experience level, you gain a bonus skill point that can be spent on any non-combat, non-psychic skill. You can save this point to spend later if you wish.</li>";
     }
     else if (isFullPsychic()) {
@@ -1984,7 +2486,7 @@ function updateClassDetails() {
     else if (isFullWarrior()) {
 
         detailstext += "<li>You gain a free level in a combat-related focus associated with your background. The GM decides if a focus qualifies if it's an ambiguous case.</li>";
-        detailstext += "<li>Warriors are lucky in combat. Once per fight, as an Instant ability, you can either choose to negate a successful attack roll against you or turn a missed attack roll you made into a successful hit. You can use this ability after the dice are rolled, but it cannot be used against environmental damage, effects without an attack roll, or hits on a vehicle you’re occupying.</li>";
+        detailstext += "<li><b>Warriors are lucky in combat. Once per fight, as an Instant ability, you can either choose to negate a successful attack roll against you or turn a missed attack roll you made into a successful hit. You can use this ability after the dice are rolled, but it cannot be used against environmental damage, effects without an attack roll, or hits on a vehicle you’re occupying.</b></li>";
         detailstext += "<li>You gain two extra maximum hit points at each character level.</li>";
     }
     else {
@@ -2002,43 +2504,14 @@ function updateClassDetails() {
     setContentByID("classdetails", detailstext);
 }
 
-function updateFocusDetails() {
-    // TODO
-}
-
-function updateSkillDetails() {
-    // TODO
-}
-
-function updateWeaponDetails() {
-    // TODO
-}
-
-function updateArmorDetails() {
-    // TODO
-}
-
-function updateCyberwareDetails() {
-    // TODO
-}
-
-function updateEquipmentDetails() {
-    // TODO
-}
-
-function updatePsychicTechniqueDetails() {
-    // TODO
+function updateBackgroundDetails() {
+    var backgrounddata = staticData.backgrounds.find(x => x.name == charData.background);
+    setContentByID("backgrounddetails", getStringFromArray(backgrounddata.details));
 }
 
 function updateAllDetails() {
     updateClassDetails();
-    updateFocusDetails();
-    updateSkillDetails();
-    updateWeaponDetails();
-    updateArmorDetails();
-    updateCyberwareDetails();
-    updateEquipmentDetails();
-    updatePsychicTechniqueDetails();
+    updateBackgroundDetails();
 }
 
 /******************************************************************************
@@ -2046,13 +2519,14 @@ function updateAllDetails() {
 ******************************************************************************/
 
 function addFocus(name, level, init) {
+    var focusdata = staticData.foci.find(x => x.name == name);
     var table = getFociTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
     var levelcell = row.insertCell(-1);
-    namecell.class = "fieldcontent";
-    levelcell.class = "fieldcontent";
-    setContent(namecell, name);
+    namecell.className = "fieldcontent";
+    levelcell.className = "fieldcontentshort";
+    setDetails(namecell, name, focusdata.details);
     setContent(levelcell, level);
     if (!init) {
         if (!chardata.foci) {
@@ -2063,14 +2537,18 @@ function addFocus(name, level, init) {
 }
 
 function addSkill(name, level, init) {
+    var skilldata = staticData.skills.find(x => x.name == name);
     var table = getSkillTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
     var levelcell = row.insertCell(-1);
-    namecell.class = "fieldcontent";
-    levelcell.class = "fieldcontent";
-    setContent(namecell, name);
-    setContent(levelcell, level);
+    var levelcellcontent = document.createElement("div");
+    levelcell.appendChild(levelcellcontent);
+    namecell.className = "fieldcontent";
+    levelcell.className = "fieldcontentshort";
+    levelcellcontent.className = "fieldcontentshort";
+    setDetails(namecell, name, skilldata.details);
+    setContent(levelcellcontent, level);
     if (!init) {
         if (!chardata.skills) {
             charData.skills = [];
@@ -2080,33 +2558,17 @@ function addSkill(name, level, init) {
 }
 
 function addPsychicTechnique(name, init) {
+    var techniquedata = staticData.techniques.find(x => x.name == name);
     var table = getTechniquesTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
-    namecell.class = "fieldcontent";
-    setContent(namecell, name);
+    namecell.className = "fieldcontent";
+    setDetails(namecell, name, techniquedata.details);
     if (!init) {
         if (!chardata.techniques) {
             charData.techniques = [];
         }
         charData.techniques.push(name);
-    }
-}
-
-function addGoal(name, xp, init) {
-    var table = getGoalTable();
-    var row = table.insertRow(-1);
-    var namecell = row.insertCell(-1);
-    var xpcell = row.insertCell(-1);
-    namecell.class = "fieldcontent";
-    xpcell.class = "fieldcontent";
-    setContent(namecell, name);
-    setContent(xpcell, level);
-    if (!init) {
-        if (!chardata.goals) {
-            charData.goals = [];
-        }
-        charData.goals.push({ "name": name, "xp": xp });
     }
 }
 
@@ -2310,6 +2772,19 @@ function onNotesChanged() {
 }
 
 /******************************************************************************
+                    Selection options setup functions
+******************************************************************************/
+
+function initBackgroundSelection() {
+    var backgroundelement = document.getElementById("background");
+    for (var i = 0; i < staticData.backgrounds.length; i++) {
+        var option = document.createElement("option");
+        option.text = staticData.backgrounds[i].name;
+        backgroundelement.add(option);
+    }
+}
+
+/******************************************************************************
                     Data updating, loading and saving
 ******************************************************************************/
 
@@ -2330,6 +2805,7 @@ function dataChanged() {
 }
 
 function fillCharSheet() {
+    initBackgroundSelection();
     setContentByID("name", charData.name);
     setContentByID("class", charData.class);
     setContentByID("species", charData.species);
