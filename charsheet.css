@@ -1,0 +1,87 @@
+body {
+    font-family: Electrolize;
+    font-size: 16px;
+}
+
+/* 
+use dt/dd/dl elements for dynamic arrangement of tables depending on the screen width
+e.g.:
+    [    A    ][    B    ]
+    [    C    ][    D    ]
+and:
+    [    A    ]
+    [    B    ]
+    [    C    ]
+    [    D    ]
+*/
+dt, dd, dl {
+    margin: 0;
+    padding: 0;
+    border-spacing: 0;
+}
+
+dl {
+    display: table;
+}
+
+dt, dd {
+    width: 400px; /* width of a table */
+    display: block;
+}
+
+@media only screen and (min-width:800px) { /* width of two tables */
+    dt, dd {
+        float: left;
+    }
+}
+
+table, th, td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+    vertical-align: top;
+    height: 21px;
+}
+
+table.sheetsection {
+    width: 400px;
+}
+
+.fieldtype {
+    font-variant: small-caps;
+    width: 200px;
+}
+
+.fieldtypeshort {
+    font-variant: small-caps;
+    width: 31px;
+}
+
+.fieldcontent {
+    width: 248px;
+}
+
+.fieldcontentshort {
+    width: 31px;
+    text-align: center;
+}
+
+.fieldcontentsummary {
+    display: table-cell;
+    width: 228px;
+}
+
+/* change the summary/details marker from a left-aligned arrow to right-aligned text */
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details summary:after {
+    content: "[+]";
+}
+
+details[open] summary:after {
+    content: "[-]";
+}

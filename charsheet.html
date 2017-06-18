@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Stars Without Number Revised v0.8 Character Sheet</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="charsheet.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <!--
+    TODOs:
+    * 0.9!
+    * prioritize base features over fancy stuff like auto leveling
+      * usable version soon?
+    * other fields as dropdown?
+    * complete basic sheet
+      * skills
+        * button to improve using skill points?
+      * psychic techniques
+    * add equipment - weapons, armor, ammo, mods, other items
+      * calculate numbers (like attack bonus and damage) based on stats
+    * [Save] button, overwrites loaded file
+    * [Save As] button, lets user select path and filename
+    * buttons to commit and refund effort
+    * character generation?
+    * leveling?
+      * both of the above should include handling of free skills from foci and other changes to things like saving throws etc.
+      * hp roller?
+      * free skills and other bonuses from foci?
+        At levels 2, 5, 7, and 10 a PC can add a
+        level to an existing focus or pick up the first level in a
+        new focus. If this is the first level they’ve taken in the
+        focus, they might be granted a skill as a free bonus pick,
+        depending on the focus’ benefits. During character
+        creation, this bonus skill pick is treated like any other
+        skill pick. If the focus is taken as part of advancement,
+        however, it instead counts as three skill points spent
+        toward increasing the skill. This is enough to raise a
+        nonexistent skill to level-1, or boost a level-1 skill to
+        level-2. If the skill points aren’t quite enough to raise
+        the skill to a new level, they remain as credit toward
+        future advances. If applied to a skill that is already at
+        level-4, the PC can spend the three skill points on any
+        other skill of their choice.
+    * complete data
+      * all backgrounds (beta)
+      * all foci (beta)
+      * all armor (from core and supplements)
+      * all weapons (from core and supplements)
+      * all equipment (from core and supplements)
+      * all cyberware (from core and supplements)
+    * similar sheet for spaceships?
+    * similar sheet for vehicles?
+    * similar sheet for player faction?
+    * GM turn tool?
+  -->
+  <input type="file" id="file" name="file" /><br>
+  <button onclick="createDownloadLink()">Create download link</button>
+  <a href="" id="downloadlink" style="display: none" onclick='downloadLinkClicked();'>click here to download your file</a>
+  <br><br>
+  <table class="sheetsection">
+    <tr>
+      <td class="fieldtype">
+        Name
+      </td>
+      <td class="fieldcontent" colspan="5">
+        <input type="text" id="name" class="fieldcontent" placeholder="Name" onchange="onNameChanged()" />
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Class
+      </td>
+      <td colspan="5">
+        <details>
+          <summary>
+            <select id="class" class="fieldcontentsummary" onchange="onClassChanged()">
+              <option>Expert</option>
+              <option>Psychic</option>
+              <option>Warrior</option>
+              <option>Expert/Psychic</option>
+              <option>Expert/Warrior</option>
+              <option>Psychic/Warrior</option>
+            </select>
+          </summary>
+          <div id="classdetails" class="fieldcontentdetails"></div>
+        </details>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Species
+      </td>
+      <td class="fieldcontent" colspan="5">
+        <input type="text" id="species" class="fieldcontent" placeholder="Species" onchange="onSpeciesChanged()" />
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Background
+      </td>
+      <td class="fieldcontent" colspan="5">
+        <input type="text" id="background" class="fieldcontent" placeholder="Background" onchange="onBackgroundChanged()" />
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Homeworld
+      </td>
+      <td class="fieldcontent" colspan="5">
+        <input type="text" id="homeworld" class="fieldcontent" placeholder="Homeworld" onchange="onHomeworldChanged()" />
+      </td>
+    </tr>
+  </table>
+  <table class="sheetsection">
+    <tr>
+      <td class="fieldtype">
+        Strength
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="str" min="3" max="18" maxlength="2" class="fieldcontentshort" onchange="onStrChanged()" />
+      </td>
+      <td class="fieldcontentshort">
+        <div id="strmod"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Intelligence
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="int" min="3" max="18" maxlength="2" class="fieldcontentshort" onchange="onIntChanged()" />
+      </td>
+      <td class="fieldcontentshort">
+        <div id="intmod"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Dexterity
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="dex" min="3" max="18" maxlength="2" class="fieldcontentshort" onchange="onDexChanged()" />
+      </td>
+      <td class="fieldcontentshort">
+        <div id="dexmod"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Wisdom
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="wis" min="3" max="18" maxlength="2" class="fieldcontentshort" onchange="onWisChanged()" />
+      </td>
+      <td class="fieldcontentshort">
+        <div id="wismod"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Constitution
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="con" min="3" max="18" maxlength="2" class="fieldcontentshort" onchange="onConChanged()" />
+      </td>
+      <td class="fieldcontentshort">
+        <div id="conmod"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Charisma
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="cha" min="3" max="18" maxlength="2" class="fieldcontentshort" onchange="onChaChanged()" />
+      </td>
+      <td class="fieldcontentshort">
+        <div id="chamod"></div>
+      </td>
+    </tr>
+  </table>
+  <table class="sheetsection">
+    <tr>
+      <td class="fieldtype">
+        XP
+      </td>
+      <td class="fieldcontent" colspan="3">
+        <input type="number" id="xp" min="0" class="fieldcontent" onchange="onXPChanged()" />
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Next Level
+      </td>
+      <td class="fieldcontent" colspan="3">
+        <div id="nextlevelxp" class="fieldcontent"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Level
+      </td>
+      <td class="fieldcontentshort">
+        <div id="level" class="fieldcontentshort"></div>
+      </td>
+      <td class="fieldtype">
+        Attack Bonus
+      </td>
+      <td class="fieldcontentshort">
+        <div id="attackbonus" class="fieldcontentshort"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        HP
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="hp" min="0" class="fieldcontentshort" onchange="onHPChanged()" />
+      </td>
+      <td class="fieldtype">
+        Max
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="maxhp" min="1" class="fieldcontentshort" onchange="onMaxHPChanged()" />
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        System Strain
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="systemstrain" min="0" class="fieldcontentshort" onchange="onSystemStrainChanged()" />
+      </td>
+      <td class="fieldtype">
+        Max
+      </td>
+      <td class="fieldcontentshort">
+        <div id="maxsystemstrain" class="fieldcontentshort" />
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Physical Save
+      </td>
+      <td class="fieldcontentshort">
+        <div id="physicalsave" class="fieldcontentshort"></div>
+      </td>
+      <td class="fieldtype">
+        Evasion Save
+      </td>
+      <td class="fieldcontentshort">
+        <div id="evasionsave" class="fieldcontentshort"></div>
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Mental Save
+      </td>
+      <td class="fieldcontentshort">
+        <div id="mentalsave" class="fieldcontentshort"></div>
+      </td>
+      <td class="fieldtype">
+        Luck Save
+      </td>
+      <td class="fieldcontentshort">
+        <div id="lucksave" class="fieldcontentshort"></div>
+      </td>
+    </tr>
+  </table>
+  <table class="sheetsection" id="foci">
+    <tr>
+      <th class="fieldtype">
+        Focus
+      </th>
+      <th class="fieldtypeshort">
+        Level
+      </th>
+    </tr>
+  </table>
+  <table class="sheetsection" id="skills">
+    <tr>
+      <th class="fieldtype" colspan="2">
+        Skills
+      </th>
+    </tr>
+  </table>
+  <table class="sheetsection">
+    <tr>
+      <td class="fieldtype">
+        Long-term goal
+      </td>
+      <td class="fieldcontent">
+        <input type="text" id="longtermgoal" class="fieldcontent" placeholder="None" onchange="onLongTermGoalChanged()" />
+      </td>
+    </tr>
+    <tr>
+      <td class="fieldtype">
+        Short-term goal
+      </td>
+      <td class="fieldcontent">
+        <input type="text" id="shorttermgoal" class="fieldcontent" placeholder="None" onchange="onShortTermGoalChanged()" />
+      </td>
+    </tr>
+  </table>
+  <table class="sheetsection" id="armor">
+    <tr>
+      <th class="fieldtype">
+        Armor
+      </th>
+      <th class="fieldtypeshort">
+        AC
+      </th>
+      <th class="fieldtypeshort">
+        Enc
+      </th>
+      <th class="fieldtypeshort">
+        TL
+      </th>
+      <th class="fieldtypeshort">
+        R/S
+      </th>
+    </tr>
+  </table>
+  <table class="sheetsection" id="weapons">
+    <tr>
+      <th class="fieldtype">
+        Weapon
+      </th>
+      <th class="fieldtypeshort">
+        Dmg
+      </th>
+      <th class="fieldtypeshort">
+        Range
+      </th>
+      <th class="fieldtypeshort">
+        Mag
+      </th>
+      <th class="fieldtypeshort">
+        Attr
+      </th>
+      <th class="fieldtypeshort">
+        Enc
+      </th>
+      <th class="fieldtypeshort">
+        TL
+      </th>
+      <th class="fieldtypeshort">
+        R/S
+      </th>
+    </tr>
+  </table>
+  <table class="sheetsection" id="equipment">
+    <tr>
+      <th class="fieldtype">
+        Equipment
+      </th>
+      <th class="fieldtypeshort">
+        Enc
+      </th>
+      <th class="fieldtypeshort">
+        R/S
+      </th>
+    </tr>
+  </table>
+  <table class="sheetsection" id="cyberware">
+    <tr>
+      <th class="fieldtype">
+        Cyberware
+      </th>
+    </tr>
+  </table>
+  <table class="sheetsection">
+    <tr>
+      <th>
+        <textarea id="notes" rows="10" cols="50" placeholder="Notes" onchange="onNotesChanged()"></textarea>
+      </th>
+    </tr>
+  </table>
+  <div id="psychicstuff">
+    <table class="sheetsection">
+      <tr>
+        <td class="fieldtype" colspan="3">
+          Committed Effort
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldtype">
+          Scene
+        </td>
+        <td class="fieldtype">
+          Day
+        </td>
+        <td class="fieldtype">
+          Other
+        </td>
+      </tr>
+      <tr>
+        <td class="fieldcontentshort">
+          <input type="number" id="effort_scene" min="0" maxlength="2" class="fieldcontentshort" onchange="onEffortChanged()" />
+        </td>
+        <td class="fieldcontentshort">
+          <input type="number" id="effort_day" min="0" maxlength="2" class="fieldcontentshort" onchange="onEffortChanged()" />
+        </td>
+        <td class="fieldcontentshort">
+          <input type="number" id="effort_other" min="0" maxlength="2" class="fieldcontentshort" onchange="onEffortChanged()" />
+        </td>
+      </tr>
+    </table>
+    <table class="sheetsection">
+      <tr>
+        <td class="fieldtype">
+          Effort
+        </td>
+        <td class="fieldcontentshort">
+          <div id="effort" class="fieldcontentshort"></div>
+        </td>
+        <td class="fieldtype">
+          Max
+        </td>
+        <td class="fieldcontentshort">
+          <div id="maxeffort" class="fieldcontentshort"></div>
+        </td>
+      </tr>
+    </table>
+    <table class="sheetsection" id="techniques">
+      <tr>
+        <th class="fieldtype">
+          Psychic Techniques
+        </th>
+      </tr>
+    </table>
+  </div>
+  <script src="charsheet.js" type="text/javascript"></script>
+</body>
+</html>
