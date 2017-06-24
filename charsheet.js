@@ -45,9 +45,9 @@ function downloadLinkClicked() {
     link.style.display = "none";
 }
 
-function clearTable(table, keepheader) {
-    while (table.rows.length > (keepheader ? 1 : 0)) {
-        table.deleteRow(1);
+function clearTable(table, keptrows) {
+    while (table.rows.length > keptrows) {
+        table.deleteRow(-1);
     }
 }
 
@@ -2824,13 +2824,13 @@ function fillCharSheet() {
     setContentByID("effort_scene", charData.effort.scene);
     setContentByID("effort_day", charData.effort.day);
     setContentByID("effort_other", charData.effort.other);
-    clearTable(getFociTable(), true);
+    clearTable(getFociTable(), 1);
     if (charData.foci) {
         for (var i = 0; i < charData.foci.length; i++) {
             addFocus(charData.foci[i].name, charData.foci[i].level, true);
         }
     }
-    clearTable(getSkillTable(), true);
+    clearTable(getSkillTable(), 1);
     if (charData.skills) {
         for (var i = 0; i < charData.skills.length; i++) {
             addSkill(charData.skills[i].name, charData.skills[i].level, true);
@@ -2844,33 +2844,33 @@ function fillCharSheet() {
             setContentByID("shorttermgoal", charData.goals.shortterm);
         }
     }
-    clearTable(getArmorTable(), true);
+    clearTable(getArmorTable(), 1);
     if (charData.armor) {
         for (var i = 0; i < charData.armor.length; i++) {
             addArmor(charData.armor[i], true);
             // mods?
         }
     }
-    clearTable(getWeaponTable(), true);
+    clearTable(getWeaponTable(), 1);
     if (charData.weapons) {
         for (var i = 0; i < charData.weapons.length; i++) {
             addWeapon(charData.weapons[i], true);
             // mods?
         }
     }
-    clearTable(getEquipmentTable(), true);
+    clearTable(getEquipmentTable(), 1);
     if (charData.equipment) {
         for (var i = 0; i < charData.equipment.length; i++) {
             addEquipment(charData.equipment[i], true);
         }
     }
-    clearTable(getCyberwareTable(), true);
+    clearTable(getCyberwareTable(), 1);
     if (charData.cyberware) {
         for (var i = 0; i < charData.cyberware.length; i++) {
             addCyberware(charData.cyberware[i], true);
         }
     }
-    clearTable(getTechniquesTable(), true);
+    clearTable(getTechniquesTable(), 1);
     if (charData.techniques) {
         for (var i = 0; i < charData.techniques.length; i++) {
             addPsychicTechnique(charData.techniques[i], true);
