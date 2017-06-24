@@ -81,8 +81,7 @@
       <td class="fieldcontent">
         <details>
           <summary>
-            <select id="background" class="fieldcontentsummary" onchange="onBackgroundChanged()">
-            </select>
+            <select id="background" class="fieldcontentsummary" onchange="onBackgroundChanged()"></select>
           </summary>
           <div id="backgrounddetails" class="fieldcontentdetails"></div>
         </details>
@@ -351,6 +350,27 @@
       </td>
       <td class="fieldcontent">
         <input type="text" id="shorttermgoal" class="fieldcontent" placeholder="None" onchange="onShortTermGoalChanged()" />
+      </td>
+    </tr>
+  </table>
+  <br>
+  <table class="sheetsection" id="finances">
+    <tr>
+      <th class="fieldtype" colspan="2">
+        Finances
+      </th>
+      <th class="fieldcontentshort">
+        <button onclick="addFinanceItem()">
+          Add
+        </button>
+      </th>
+    </tr>
+    <tr>
+      <td class="fieldtype" colspan="2">
+        Available Credits
+      </td>
+      <td class="fieldcontentshort">
+        <input type="number" id="credits" class="fieldcontentshort" onchange="onCreditsChanged()" />
       </td>
     </tr>
   </table>

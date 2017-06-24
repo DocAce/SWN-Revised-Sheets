@@ -131,6 +131,10 @@ function getTechniquesTable() {
     return document.getElementById("techniques");
 }
 
+function getFinancesTable() {
+    return document.getElementById("finances");
+}
+
 /******************************************************************************
      Character-related helper functions (not using global data directly)
 ******************************************************************************/
@@ -2312,11 +2316,14 @@ var charData = {
     "foci": [],
     "skills": [],
     "techniques": [],
-    "weapons": [],
+    "finances": {
+        "credits": 0,
+        "items": []
+    },
     "armor": [],
-    "items": [],
-    "money": 0,
-    "debts": []
+    "weapons": [],
+    "equipment": [],
+    "cyberware": []
 };
 
 // non-saved data, contains derived values for easy access
@@ -2529,7 +2536,7 @@ function addFocus(name, level, init) {
     setDetails(namecell, name, focusdata.details);
     setContent(levelcell, level);
     if (!init) {
-        if (!chardata.foci) {
+        if (!charData.foci) {
             charData.foci = [];
         }
         charData.foci.push({ "name": name, "level": level });
@@ -2550,7 +2557,7 @@ function addSkill(name, level, init) {
     setDetails(namecell, name, skilldata.details);
     setContent(levelcellcontent, level);
     if (!init) {
-        if (!chardata.skills) {
+        if (!charData.skills) {
             charData.skills = [];
         }
         charData.skills.push({ "name": name, "level": level });
@@ -2565,10 +2572,49 @@ function addPsychicTechnique(name, init) {
     namecell.className = "fieldcontent";
     setDetails(namecell, name, techniquedata.details);
     if (!init) {
-        if (!chardata.techniques) {
+        if (!charData.techniques) {
             charData.techniques = [];
         }
         charData.techniques.push(name);
+    }
+}
+
+function addFinanceItem(item, init) {
+    var table = getFinancesTable();
+    var row = table.insertRow(-1);
+    var buttoncell = row.insertCell(-1);
+    var textcell = row.insertCell(-1);
+    var amountcell = row.insertCell(-1);
+    var button = document.createElement("button");
+    var textinput = document.createElement("input");
+    var amountinput = document.createElement("input");
+    button.innerHTML = "Del";
+    button.setAttribute("onclick", "deleteFinanceItem(this.parentNode.parentNode)");
+    textinput.setAttribute("onchange", "onFinanceItemChanged()");
+    amountinput.setAttribute("onchange", "onFinanceItemChanged()");
+    textinput.type = "text";
+    amountinput.type = "number";
+    buttoncell.setAttribute("class", "fieldcontentshort");
+    textcell.setAttribute("class", "fieldcontent");
+    textinput.setAttribute("class", "fieldcontent");
+    amountcell.setAttribute("class", "fieldcontentshort");
+    amountinput.setAttribute("class", "fieldcontentshort");
+    buttoncell.appendChild(button);
+    textcell.appendChild(textinput);
+    amountcell.appendChild(amountinput);
+    var text = "";
+    var amount = 0;
+    if (item) {
+        text = item.text;
+        amount = item.amount;
+    }
+    setContent(textinput, text);
+    setContent(amountinput, amount);
+    if (!init) {
+        if (!charData.finances.items) {
+            charData.finances.items = [];
+        }
+        charData.finances.items.push({ "text": text, "amount": amount });
     }
 }
 
@@ -2592,7 +2638,7 @@ function addArmor(armor, init) {
     setContent(tlcell, armordata.tl);
     setContent(equippedcell, armor.equipped);
     if (!init) {
-        if (!chardata.armor) {
+        if (!charData.armor) {
             charData.armor = [];
         }
         charData.armor.push(armor);
@@ -2628,7 +2674,7 @@ function addWeapon(weapon, init) {
     setContent(tlcell, weapondata.tl);
     setContent(equippedcell, weapon.equipped);
     if (!init) {
-        if (!chardata.weapons) {
+        if (!charData.weapons) {
             charData.weapons = [];
         }
         charData.weapons.push(weapon);
@@ -2649,7 +2695,7 @@ function addEquipment(equipment, init) {
     setContent(encumbrancecell, equipmentdata.encumbrance);
     setContent(equippedcell, equipment.equipped);
     if (!init) {
-        if (!chardata.equipment) {
+        if (!charData.equipment) {
             charData.equipment = [];
         }
         charData.equipment.push(equipment);
@@ -2663,11 +2709,21 @@ function addCyberware(cyberware, init) {
     namecell.class = "fieldcontent";
     setContent(namecell, cyberware.name);
     if (!init) {
-        if (!chardata.cyberware) {
+        if (!charData.cyberware) {
             charData.cyberware = [];
         }
         charData.cyberware.push(cyberware);
     }
+}
+
+/******************************************************************************
+                    Functions to remove certain items (WIP)
+******************************************************************************/
+
+function deleteFinanceItem(row) {
+    var tbody = row.parentNode;
+    tbody.removeChild(row);
+    onFinanceItemChanged();
 }
 
 /******************************************************************************
@@ -2766,6 +2822,46 @@ function onShortTermGoalChanged() {
     dataChanged();
 }
 
+function onCreditsChanged() {
+    charData.finances.credits= getContentByID("credits");
+    dataChanged();
+}
+
+function onFinanceItemChanged() {
+    // rebuild items in data (this can probably be done better...)
+    charData.finances.items = [];
+    var table = getFinancesTable();
+    if (table.rows.length > 2) {
+        for (var i = 2; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            var text = getContent(row.cells[1].children[0]);
+            var amount = getContent(row.cells[2].children[0]);
+            charData.finances.items.push({ "text": text, "amount": amount });
+        }
+    }
+    dataChanged();
+}
+
+function onArmorChanged() {
+    // TODO
+    dataChanged();
+}
+
+function onWeaponChanged() {
+    // TODO
+    dataChanged();
+}
+
+function onEquipmentChanged() {
+    // TODO
+    dataChanged();
+}
+
+function onCyberwareChanged() {
+    // TODO
+    dataChanged();
+}
+
 function onNotesChanged() {
     charData.notes = getContentByID("notes");
     dataChanged();
@@ -2836,6 +2932,12 @@ function fillCharSheet() {
             addSkill(charData.skills[i].name, charData.skills[i].level, true);
         }
     }
+    clearTable(getTechniquesTable(), 1);
+    if (charData.techniques) {
+        for (var i = 0; i < charData.techniques.length; i++) {
+            addPsychicTechnique(charData.techniques[i], true);
+        }
+    }
     if (charData.goals) {
         if (charData.goals.longterm) {
             setContentByID("longtermgoal", charData.goals.longterm);
@@ -2843,6 +2945,11 @@ function fillCharSheet() {
         if (charData.goals.shortterm) {
             setContentByID("shorttermgoal", charData.goals.shortterm);
         }
+    }
+    clearTable(getFinancesTable(), 2); // keep header and "current credits" row
+    setContentByID("credits", charData.finances.credits);
+    for (var i = 0; i < charData.finances.items.length; i++) {
+        addFinanceItem(charData.finances.items[i], true);
     }
     clearTable(getArmorTable(), 1);
     if (charData.armor) {
@@ -2868,12 +2975,6 @@ function fillCharSheet() {
     if (charData.cyberware) {
         for (var i = 0; i < charData.cyberware.length; i++) {
             addCyberware(charData.cyberware[i], true);
-        }
-    }
-    clearTable(getTechniquesTable(), 1);
-    if (charData.techniques) {
-        for (var i = 0; i < charData.techniques.length; i++) {
-            addPsychicTechnique(charData.techniques[i], true);
         }
     }
     if (charData.notes) {
