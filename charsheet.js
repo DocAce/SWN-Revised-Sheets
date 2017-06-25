@@ -107,6 +107,10 @@ function getSkillTable() {
     return document.getElementById("skills");
 }
 
+function getPsychicTechniqueTable() {
+    return document.getElementById("techniques");
+}
+
 function getGoalTable() {
     return document.getElementById("goals");
 }
@@ -125,10 +129,6 @@ function getEquipmentTable() {
 
 function getCyberwareTable() {
     return document.getElementById("cyberware");
-}
-
-function getTechniquesTable() {
-    return document.getElementById("techniques");
 }
 
 function getFinancesTable() {
@@ -2381,9 +2381,14 @@ function isPartialExpert() {
                         Skill type helper functions
 ******************************************************************************/
 
-// change to check skill type in data (or change how this is queried)
+function isPsychicFocus(name) {
+    var focusdata = staticData.foci.find(x => x.name == name);
+    return focusdata.type == "psychic";
+}
+
 function isPsychicSkill(name) {
-    return name == "Biopsion" || name == "Metapsion" || name == "Precognition" || name == "Telekinesis" || name == "Telepathy" || name == "Teleportation";
+    var skilldata = staticData.skills.find(x => x.name == name);
+    return skilldata.type == "psychic";
 }
 
 /******************************************************************************
@@ -2531,10 +2536,16 @@ function addFocus(name, level, init) {
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
     var levelcell = row.insertCell(-1);
+    var levelinput = document.createElement("input");
+    levelcell.appendChild(levelinput);
     namecell.className = "fieldcontent";
     levelcell.className = "fieldcontentshort";
+    levelinput.className = "fieldcontentshort";
+    levelinput.setAttribute("onchange", "onFocusChanged(this)");
+    levelinput.type = "number";
+    levelinput.setAttribute("max", 2); // TODO: put into focus data if ones with a different number than 2 are added
     setDetails(namecell, name, focusdata.details);
-    setContent(levelcell, level);
+    setContent(levelinput, level);
     if (!init) {
         if (!charData.foci) {
             charData.foci = [];
@@ -2557,6 +2568,7 @@ function addSkill(name, level, init) {
     levelinput.className = "fieldcontentshort";
     levelinput.setAttribute("onchange", "onSkillChanged(this)");
     levelinput.type = "number";
+    levelinput.setAttribute("max", 4); // TODO: dependent on character level (and update this if the level changes)
     setDetails(namecell, name, skilldata.details);
     setContent(levelinput, level);
     if (!init) {
@@ -2570,10 +2582,16 @@ function addSkill(name, level, init) {
 
 function addPsychicTechnique(name, init) {
     var techniquedata = staticData.techniques.find(x => x.name == name);
-    var table = getTechniquesTable();
+    var table = getPsychicTechniqueTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
+    var buttoncell = row.insertCell(-1);
+    var button = document.createElement("button");
+    button.innerHTML = "Del";
+    button.setAttribute("onclick", "deletePsychicTechnique(this.parentNode.parentNode)");
     namecell.className = "fieldcontent";
+    buttoncell.setAttribute("class", "fieldcontentshort");
+    buttoncell.appendChild(button);
     setDetails(namecell, name, techniquedata.details);
     if (!init) {
         if (!charData.techniques) {
@@ -2730,6 +2748,13 @@ function addCyberware(cyberware, init) {
                     Functions to remove certain items (WIP)
 ******************************************************************************/
 
+function deletePsychicTechnique(row) {
+    var techniquename = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    row.parentNode.removeChild(row);
+    charData.techniques.splice(charData.techniques.indexOf(techniquename), 1);
+    dataChanged();
+}
+
 function deleteFinanceItem(row) {
     var tbody = row.parentNode;
     tbody.removeChild(row);
@@ -2822,6 +2847,18 @@ function onEffortChanged() {
     dataChanged();
 }
 
+function onFocusChanged(inputcell) {
+    var row = inputcell.parentNode.parentNode;
+    var focusname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    var focus = charData.foci.find(x => x.name == focusname);
+    focus.level = getContent(inputcell);
+    if (focus.level < 1) {
+        row.parentNode.removeChild(row);
+        charData.foci.splice(charData.foci.indexOf(focus), 1);
+    }
+    dataChanged();
+}
+
 function onSkillChanged(inputcell) {
     var row = inputcell.parentNode.parentNode;
     var skillname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
@@ -2902,6 +2939,39 @@ function initBackgroundSelection() {
     }
 }
 
+function onAddFocus() {
+    document.getElementById("addfocusbutton").disabled = "disabled";
+    var table = getFociTable();
+    var row = table.insertRow(-1);
+    var cell = row.insertCell(-1);
+    var focusselection = document.createElement("select");
+    cell.appendChild(focusselection);
+    cell.setAttribute("colspan", 2);
+    cell.className = "fieldcontent";
+    focusselection.className = "fieldcontent";
+    focusselection.setAttribute("onchange", "onNewFocusSelected(this)");
+    var dummyoption = document.createElement("option");
+    dummyoption.text = "Select Focus";
+    dummyoption.disabled = "disabled";
+    dummyoption.selected = "selected";
+    focusselection.add(dummyoption);
+    for (var i = 0; i < staticData.foci.length; i++) {
+        var focusname = staticData.foci[i].name;
+        if (!charData.foci.some(x => x.name == focusname) && (isPsychic() || !isPsychicFocus(focusname))) {
+            var option = document.createElement("option");
+            option.text = focusname;
+            focusselection.add(option);
+        }
+    }
+}
+
+function onNewFocusSelected(selection) {
+    document.getElementById("addfocusbutton").disabled = "";
+    var newfocus = selection.options[selection.selectedIndex].text;
+    getFociTable().deleteRow(-1);
+    addFocus(newfocus, 0, false);
+}
+
 function onAddSkill() {
     document.getElementById("addskillbutton").disabled = "disabled";
     var table = getSkillTable();
@@ -2917,7 +2987,6 @@ function onAddSkill() {
     dummyoption.text = "Select Skill";
     dummyoption.disabled = "disabled";
     dummyoption.selected = "selected";
-    // need to make dummy option selected? (don't think so)
     skillselection.add(dummyoption);
     for (var i = 0; i < staticData.skills.length; i++) {
         var skillname = staticData.skills[i].name;
@@ -2934,6 +3003,39 @@ function onNewSkillSelected(selection) {
     var newskill = selection.options[selection.selectedIndex].text;
     getSkillTable().deleteRow(-1);
     addSkill(newskill, 0, false);
+}
+
+function onAddPsychicTechnique() {
+    document.getElementById("addpsychictechniquebutton").disabled = "disabled";
+    var table = getPsychicTechniqueTable();
+    var row = table.insertRow(-1);
+    var cell = row.insertCell(-1);
+    var techniqueselection = document.createElement("select");
+    cell.appendChild(techniqueselection);
+    cell.setAttribute("colspan", 2);
+    cell.className = "fieldcontent";
+    techniqueselection.className = "fieldcontent";
+    techniqueselection.setAttribute("onchange", "onNewPsychicTechniqueSelected(this)");
+    var dummyoption = document.createElement("option");
+    dummyoption.text = "Select Psychic Technique";
+    dummyoption.disabled = "disabled";
+    dummyoption.selected = "selected";
+    techniqueselection.add(dummyoption);
+    for (var i = 0; i < staticData.techniques.length; i++) {
+        var techniquename = staticData.techniques[i].name;
+        if (!charData.techniques.some(x => x.name == techniquename)) {
+            var option = document.createElement("option");
+            option.text = techniquename;
+            techniqueselection.add(option);
+        }
+    }
+}
+
+function onNewPsychicTechniqueSelected(selection) {
+    document.getElementById("addpsychictechniquebutton").disabled = "";
+    var newtechnique = selection.options[selection.selectedIndex].text;
+    getPsychicTechniqueTable().deleteRow(-1);
+    addPsychicTechnique(newtechnique, 0, false);
 }
 
 /******************************************************************************
@@ -2988,7 +3090,7 @@ function fillCharSheet() {
             addSkill(charData.skills[i].name, charData.skills[i].level, true);
         }
     }
-    clearTable(getTechniquesTable(), 1);
+    clearTable(getPsychicTechniqueTable(), 1);
     if (charData.techniques) {
         for (var i = 0; i < charData.techniques.length; i++) {
             addPsychicTechnique(charData.techniques[i], true);

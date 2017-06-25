@@ -12,14 +12,9 @@
 <body>
   <!--
     Priority:
-    * money
-      * base amount and optional fields for money tied up somewhere (e.g. lent to others, invested, ...)
-    * debts
-      * fields for amount and debtor
-    * buttons to buy/upgrade foci
-    * buttons to buy/upgrade skills
-    * buttons to buy psychic techniques
-    * buttons to add/remove things
+    * lowlight abilities in focus description that the current level doesn't give
+    * support skills and foci with custom names (e.g. Specialist, Work)
+    * buttons to add/remove more things
       * weapons
       * armor
       * equipment
@@ -48,6 +43,7 @@
       * hp roller (optional)
       * free skills and other bonuses from foci
       * free technique from psychic skill
+      * max skill level depending on character level
   -->
   <table class="sheetsection">
     <tr>
@@ -261,8 +257,11 @@
   <br>
   <table class="sheetsection" id="foci">
     <tr>
-      <th class="fieldtype" colspan="2">
+      <th class="fieldtype">
         Foci
+      </th>
+      <th class="fieldtypeshort">
+        <button id="addfocusbutton" onclick="onAddFocus()">Add</button>
       </th>
     </tr>
   </table>
@@ -272,7 +271,7 @@
       <th class="fieldtype">
         Skills
       </th>
-      <th class="fieldtype">
+      <th class="fieldtypeshort">
         <button id="addskillbutton" onclick="onAddSkill()">Add</button>
       </th>
     </tr>
@@ -329,6 +328,9 @@
         <th class="fieldtype">
           Psychic Techniques
         </th>
+        <th class="fieldtypeshort">
+          <button id="addpsychictechniquebutton" onclick="onAddPsychicTechnique()">Add</button>
+        </th>
       </tr>
     </table>
     <br>
@@ -362,7 +364,7 @@
       <th class="fieldtype" colspan="2">
         Finances
       </th>
-      <th class="fieldcontentshort">
+      <th class="fieldtypeshort">
         <button onclick="addFinanceItem()">
           Add
         </button>
