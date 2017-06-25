@@ -2540,6 +2540,7 @@ function addFocus(name, level, init) {
             charData.foci = [];
         }
         charData.foci.push({ "name": name, "level": level });
+        dataChanged();
     }
 }
 
@@ -2549,18 +2550,21 @@ function addSkill(name, level, init) {
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
     var levelcell = row.insertCell(-1);
-    var levelcellcontent = document.createElement("div");
-    levelcell.appendChild(levelcellcontent);
+    var levelinput = document.createElement("input");
+    levelcell.appendChild(levelinput);
     namecell.className = "fieldcontent";
     levelcell.className = "fieldcontentshort";
-    levelcellcontent.className = "fieldcontentshort";
+    levelinput.className = "fieldcontentshort";
+    levelinput.setAttribute("onchange", "onSkillChanged(this)");
+    levelinput.type = "number";
     setDetails(namecell, name, skilldata.details);
-    setContent(levelcellcontent, level);
+    setContent(levelinput, level);
     if (!init) {
         if (!charData.skills) {
             charData.skills = [];
         }
         charData.skills.push({ "name": name, "level": level });
+        dataChanged();
     }
 }
 
@@ -2576,6 +2580,7 @@ function addPsychicTechnique(name, init) {
             charData.techniques = [];
         }
         charData.techniques.push(name);
+        dataChanged();
     }
 }
 
@@ -2615,6 +2620,7 @@ function addFinanceItem(item, init) {
             charData.finances.items = [];
         }
         charData.finances.items.push({ "text": text, "amount": amount });
+        dataChanged();
     }
 }
 
@@ -2642,6 +2648,7 @@ function addArmor(armor, init) {
             charData.armor = [];
         }
         charData.armor.push(armor);
+        dataChanged();
     }
 }
 
@@ -2678,6 +2685,7 @@ function addWeapon(weapon, init) {
             charData.weapons = [];
         }
         charData.weapons.push(weapon);
+        dataChanged();
     }
 }
 
@@ -2699,6 +2707,7 @@ function addEquipment(equipment, init) {
             charData.equipment = [];
         }
         charData.equipment.push(equipment);
+        dataChanged();
     }
 }
 
@@ -2713,6 +2722,7 @@ function addCyberware(cyberware, init) {
             charData.cyberware = [];
         }
         charData.cyberware.push(cyberware);
+        dataChanged();
     }
 }
 
@@ -2812,6 +2822,18 @@ function onEffortChanged() {
     dataChanged();
 }
 
+function onSkillChanged(inputcell) {
+    var row = inputcell.parentNode.parentNode;
+    var skillname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    var skill = charData.skills.find(x => x.name == skillname);
+    skill.level = getContent(inputcell);
+    if (skill.level < 0) {
+        row.parentNode.removeChild(row);
+        charData.skills.splice(charData.skills.indexOf(skill), 1);
+    }
+    dataChanged();
+}
+
 function onLongTermGoalChanged() {
     charData.goals.longterm = getContentByID("longtermgoal");
     dataChanged();
@@ -2868,7 +2890,7 @@ function onNotesChanged() {
 }
 
 /******************************************************************************
-                    Selection options setup functions
+                    Selection related functions
 ******************************************************************************/
 
 function initBackgroundSelection() {
@@ -2878,6 +2900,40 @@ function initBackgroundSelection() {
         option.text = staticData.backgrounds[i].name;
         backgroundelement.add(option);
     }
+}
+
+function onAddSkill() {
+    document.getElementById("addskillbutton").disabled = "disabled";
+    var table = getSkillTable();
+    var row = table.insertRow(-1);
+    var cell = row.insertCell(-1);
+    var skillselection = document.createElement("select");
+    cell.appendChild(skillselection);
+    cell.setAttribute("colspan", 2);
+    cell.className = "fieldcontent";
+    skillselection.className = "fieldcontent";
+    skillselection.setAttribute("onchange", "onNewSkillSelected(this)");
+    var dummyoption = document.createElement("option");
+    dummyoption.text = "Select Skill";
+    dummyoption.disabled = "disabled";
+    dummyoption.selected = "selected";
+    // need to make dummy option selected? (don't think so)
+    skillselection.add(dummyoption);
+    for (var i = 0; i < staticData.skills.length; i++) {
+        var skillname = staticData.skills[i].name;
+        if (!charData.skills.some(x => x.name == skillname) && (isPsychic() || !isPsychicSkill(skillname))) {
+            var option = document.createElement("option");
+            option.text = skillname;
+            skillselection.add(option);
+        }
+    }
+}
+
+function onNewSkillSelected(selection) {
+    document.getElementById("addskillbutton").disabled = "";
+    var newskill = selection.options[selection.selectedIndex].text;
+    getSkillTable().deleteRow(-1);
+    addSkill(newskill, 0, false);
 }
 
 /******************************************************************************
