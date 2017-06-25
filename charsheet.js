@@ -19,7 +19,8 @@ function getContentByID(id) {
     return getContent(document.getElementById(id));
 }
 
-function setContent(element, value) {
+function setContent(element, content) {
+    var value = content ? content : "-";
     if (isValueElement(element)) {
         element.value = value;
     }
@@ -2447,7 +2448,7 @@ function updateAttackBonus() {
 function updateSystemStrain() {
     dynData.maxsystemstrain = charData.stats.con;
     for (var i = 0; i < charData.cyberware.length; i++) {
-        var cyberware = staticData.cyberware.find(x => x.name == charData.cyberware[i].name);
+        var cyberware = staticData.cyberware.find(x => x.name == charData.cyberware[i]);
         dynData.maxsystemstrain -= cyberware.systemstrain;
     }
     setContentByID("maxsystemstrain", dynData.maxsystemstrain);
@@ -2642,8 +2643,8 @@ function addFinanceItem(item, init) {
     }
 }
 
-function addArmor(armor, init) {
-    var armordata = staticData.armor.find(x => x.name == armor.name);
+function addArmor(armor, equipped, init) {
+    var armordata = staticData.armor.find(x => x.name == armor);
     var table = getArmorTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
@@ -2651,27 +2652,33 @@ function addArmor(armor, init) {
     var encumbrancecell = row.insertCell(-1);
     var tlcell = row.insertCell(-1);
     var equippedcell = row.insertCell(-1);
+    var buttoncell = row.insertCell(-1);
+    var button = document.createElement("button");
+    button.innerHTML = "Del";
+    button.setAttribute("onclick", "deleteArmor(this.parentNode.parentNode)");
     namecell.class = "fieldcontent";
     accell.class = "fieldcontentshort";
     encumbrancecell.class = "fieldcontentshort";
     tlcell.class = "fieldcontentshort";
     equippedcell.class = "fieldcontentshort";
-    setContent(namecell, armor.name);
+    buttoncell.setAttribute("class", "fieldcontentshort");
+    buttoncell.appendChild(button);
+    setContent(namecell, armor);
     setContent(accell, armordata.ac);
     setContent(encumbrancecell, armordata.encumbrance);
     setContent(tlcell, armordata.tl);
-    setContent(equippedcell, armor.equipped);
+    setContent(equippedcell, equipped);
     if (!init) {
         if (!charData.armor) {
             charData.armor = [];
         }
-        charData.armor.push(armor);
+        charData.armor.push({ "name": armor, "equipped": equipped });
         dataChanged();
     }
 }
 
-function addWeapon(weapon, init) {
-    var weapondata = staticData.weapons.find(x => x.name == weapon.name);
+function addWeapon(weapon, equipped, init) {
+    var weapondata = staticData.weapons.find(x => x.name == weapon);
     var table = getWeaponTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
@@ -2682,6 +2689,10 @@ function addWeapon(weapon, init) {
     var encumbrancecell = row.insertCell(-1);
     var tlcell = row.insertCell(-1);
     var equippedcell = row.insertCell(-1);
+    var buttoncell = row.insertCell(-1);
+    var button = document.createElement("button");
+    button.innerHTML = "Del";
+    button.setAttribute("onclick", "deleteWeapon(this.parentNode.parentNode)");
     namecell.class = "fieldcontent";
     dmgcell.class = "fieldcontentshort";
     rangecell.class = "fieldcontentshort";
@@ -2690,41 +2701,49 @@ function addWeapon(weapon, init) {
     encumbrancecell.class = "fieldcontentshort";
     tlcell.class = "fieldcontentshort";
     equippedcell.class = "fieldcontentshort";
-    setContent(namecell, weapon.name);
+    buttoncell.setAttribute("class", "fieldcontentshort");
+    buttoncell.appendChild(button);
+    setContent(namecell, weapon);
     setContent(dmgcell, weapondata.damage);
     setContent(rangecell, weapondata.range);
     setContent(magazinecell, weapondata.magazine);
     setContent(attributecell, weapondata.attribute);
     setContent(encumbrancecell, weapondata.encumbrance);
     setContent(tlcell, weapondata.tl);
-    setContent(equippedcell, weapon.equipped);
+    setContent(equippedcell, equipped);
     if (!init) {
         if (!charData.weapons) {
             charData.weapons = [];
         }
-        charData.weapons.push(weapon);
+        charData.weapons.push({ "name": weapon, "equipped": equipped });
         dataChanged();
     }
 }
 
-function addEquipment(equipment, init) {
-    var equipmentdata = staticData.equipment.find(x => x.name == equipment.name);
+function addEquipment(equipment, equipped, init) {
+    var equipmentdata = staticData.equipment.find(x => x.name == equipment);
     var table = getEquipmentTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
     var encumbrancecell = row.insertCell(-1);
     var equippedcell = row.insertCell(-1);
+    var buttoncell = row.insertCell(-1);
+    var button = document.createElement("button");
+    button.innerHTML = "Del";
+    button.setAttribute("onclick", "deleteEquipment(this.parentNode.parentNode)");
     namecell.class = "fieldcontent";
     encumbrancecell.class = "fieldcontentshort";
     equippedcell.class = "fieldcontentshort";
-    setContent(namecell, equipment.name);
+    buttoncell.setAttribute("class", "fieldcontentshort");
+    buttoncell.appendChild(button);
+    setContent(namecell, equipment);
     setContent(encumbrancecell, equipmentdata.encumbrance);
-    setContent(equippedcell, equipment.equipped);
+    setContent(equippedcell, equipped);
     if (!init) {
         if (!charData.equipment) {
             charData.equipment = [];
         }
-        charData.equipment.push(equipment);
+        charData.equipment.push({ "name": equipment, "equipped": equipped });
         dataChanged();
     }
 }
@@ -2733,8 +2752,14 @@ function addCyberware(cyberware, init) {
     var table = getCyberwareTable();
     var row = table.insertRow(-1);
     var namecell = row.insertCell(-1);
+    var buttoncell = row.insertCell(-1);
+    var button = document.createElement("button");
+    button.innerHTML = "Del";
+    button.setAttribute("onclick", "deleteCyberware(this.parentNode.parentNode)");
     namecell.class = "fieldcontent";
-    setContent(namecell, cyberware.name);
+    buttoncell.setAttribute("class", "fieldcontentshort");
+    buttoncell.appendChild(button);
+    setContent(namecell, cyberware);
     if (!init) {
         if (!charData.cyberware) {
             charData.cyberware = [];
@@ -2759,6 +2784,34 @@ function deleteFinanceItem(row) {
     var tbody = row.parentNode;
     tbody.removeChild(row);
     onFinanceItemChanged();
+}
+
+function deleteArmor(row) {
+    var armorname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    row.parentNode.removeChild(row);
+    //charData.armor.splice(charData.techniques.indexOf(armorname), 1);
+    dataChanged();
+}
+
+function deleteWeapon(row) {
+    var weaponname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    row.parentNode.removeChild(row);
+    //charData.weapons.splice(charData.weapons.indexOf(weaponname), 1);
+    dataChanged();
+}
+
+function deleteEquipment(row) {
+    var equipmentname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    row.parentNode.removeChild(row);
+    //charData.equipment.splice(charData.equipment.indexOf(equipmentname), 1);
+    dataChanged();
+}
+
+function deleteCyberware(row) {
+    var cyberwarename = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    row.parentNode.removeChild(row);
+    charData.cyberware.splice(charData.cyberware.indexOf(cyberwarename), 1);
+    dataChanged();
 }
 
 /******************************************************************************
@@ -3038,6 +3091,126 @@ function onNewPsychicTechniqueSelected(selection) {
     addPsychicTechnique(newtechnique, 0, false);
 }
 
+function onAddArmor() {
+    document.getElementById("addarmorbutton").disabled = "disabled";
+    var table = getArmorTable();
+    var row = table.insertRow(-1);
+    var cell = row.insertCell(-1);
+    var armorselection = document.createElement("select");
+    cell.appendChild(armorselection);
+    cell.setAttribute("colspan", 6);
+    cell.className = "fieldcontent";
+    armorselection.className = "fieldcontent";
+    armorselection.setAttribute("onchange", "onNewArmorSelected(this)");
+    var dummyoption = document.createElement("option");
+    dummyoption.text = "Select Armor";
+    dummyoption.disabled = "disabled";
+    dummyoption.selected = "selected";
+    armorselection.add(dummyoption);
+    for (var i = 0; i < staticData.armor.length; i++) {
+        var option = document.createElement("option");
+        option.text = staticData.armor[i].name;
+        armorselection.add(option);
+    }
+}
+
+function onNewArmorSelected(selection) {
+    document.getElementById("addarmorbutton").disabled = "";
+    var newarmor = selection.options[selection.selectedIndex].text;
+    getArmorTable().deleteRow(-1);
+    addArmor(newarmor, "", false);
+}
+
+function onAddWeapon() {
+    document.getElementById("addarmorbutton").disabled = "disabled";
+    var table = getWeaponTable();
+    var row = table.insertRow(-1);
+    var cell = row.insertCell(-1);
+    var weaponselection = document.createElement("select");
+    cell.appendChild(weaponselection);
+    cell.setAttribute("colspan", 9);
+    cell.className = "fieldcontent";
+    weaponselection.className = "fieldcontent";
+    weaponselection.setAttribute("onchange", "onNewWeaponSelected(this)");
+    var dummyoption = document.createElement("option");
+    dummyoption.text = "Select Weapon";
+    dummyoption.disabled = "disabled";
+    dummyoption.selected = "selected";
+    weaponselection.add(dummyoption);
+    for (var i = 0; i < staticData.weapons.length; i++) {
+        var option = document.createElement("option");
+        option.text = staticData.weapons[i].name;
+        weaponselection.add(option);
+    }
+}
+
+function onNewWeaponSelected(selection) {
+    document.getElementById("addarmorbutton").disabled = "";
+    var newweapon = selection.options[selection.selectedIndex].text;
+    getWeaponTable().deleteRow(-1);
+    addWeapon(newweapon, "", false);
+}
+
+function onAddEquipment() {
+    document.getElementById("addarmorbutton").disabled = "disabled";
+    var table = getEquipmentTable();
+    var row = table.insertRow(-1);
+    var cell = row.insertCell(-1);
+    var equipmentselection = document.createElement("select");
+    cell.appendChild(equipmentselection);
+    cell.setAttribute("colspan", 4);
+    cell.className = "fieldcontent";
+    equipmentselection.className = "fieldcontent";
+    equipmentselection.setAttribute("onchange", "onNewEquipmentSelected(this)");
+    var dummyoption = document.createElement("option");
+    dummyoption.text = "Select Equipment";
+    dummyoption.disabled = "disabled";
+    dummyoption.selected = "selected";
+    equipmentselection.add(dummyoption);
+    for (var i = 0; i < staticData.equipment.length; i++) {
+        var option = document.createElement("option");
+        option.text = staticData.equipment[i].name;
+        equipmentselection.add(option);
+    }
+}
+
+function onNewEquipmentSelected(selection) {
+    document.getElementById("addarmorbutton").disabled = "";
+    var newequipment = selection.options[selection.selectedIndex].text;
+    getEquipmentTable().deleteRow(-1);
+    addEquipment(newequipment, "", false);
+}
+
+function onAddCyberware() {
+    document.getElementById("addarmorbutton").disabled = "disabled";
+    var table = getCyberwareTable();
+    var row = table.insertRow(-1);
+    var cell = row.insertCell(-1);
+    var cyberwareselection = document.createElement("select");
+    cell.appendChild(cyberwareselection);
+    cell.setAttribute("colspan", 2);
+    cell.className = "fieldcontent";
+    cyberwareselection.className = "fieldcontent";
+    cyberwareselection.setAttribute("onchange", "onNewCyberwareSelected(this)");
+    var dummyoption = document.createElement("option");
+    dummyoption.text = "Select Cyberware";
+    dummyoption.disabled = "disabled";
+    dummyoption.selected = "selected";
+    cyberwareselection.add(dummyoption);
+    for (var i = 0; i < staticData.cyberware.length; i++) {
+        var option = document.createElement("option");
+        option.text = staticData.cyberware[i].name;
+        cyberwareselection.add(option);
+    }
+}
+
+function onNewCyberwareSelected(selection) {
+    document.getElementById("addcyberwarebutton").disabled = "";
+    var newcyberware = selection.options[selection.selectedIndex].text;
+    getCyberwareTable().deleteRow(-1);
+    addCyberware(newcyberware, false);
+}
+
 /******************************************************************************
                     Data updating, loading and saving
 ******************************************************************************/
@@ -3112,21 +3285,21 @@ function fillCharSheet() {
     clearTable(getArmorTable(), 1);
     if (charData.armor) {
         for (var i = 0; i < charData.armor.length; i++) {
-            addArmor(charData.armor[i], true);
+            addArmor(charData.armor[i].name, charData.armor[i].equipped, true);
             // mods?
         }
     }
     clearTable(getWeaponTable(), 1);
     if (charData.weapons) {
         for (var i = 0; i < charData.weapons.length; i++) {
-            addWeapon(charData.weapons[i], true);
+            addWeapon(charData.weapons[i].name, charData.weapons[i].equipped, true);
             // mods?
         }
     }
     clearTable(getEquipmentTable(), 1);
     if (charData.equipment) {
         for (var i = 0; i < charData.equipment.length; i++) {
-            addEquipment(charData.equipment[i], true);
+            addEquipment(charData.equipment[i].name, charData.equipment[i].equipped, true);
         }
     }
     clearTable(getCyberwareTable(), 1);

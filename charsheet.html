@@ -13,7 +13,12 @@
   <!--
     Priority:
     * support skills and foci with custom names (e.g. Specialist, Work)
-    * buttons to add/remove more things
+    * add details to items
+      * weapons
+      * armor
+      * equipment
+      * cyberware
+    * finish buttons to remove items (needs proper removing from data)
       * weapons
       * armor
       * equipment
@@ -399,6 +404,9 @@
       <th class="fieldtypeshort">
         R/S
       </th>
+      <th class="fieldtypeshort">
+        <button id="addarmorbutton" onclick="onAddArmor()">Add</button>
+      </th>
     </tr>
   </table>
   <br>
@@ -428,6 +436,9 @@
       <th class="fieldtypeshort">
         R/S
       </th>
+      <th class="fieldtypeshort">
+        <button id="addweaponbutton" onclick="onAddWeapon()">Add</button>
+      </th>
     </tr>
   </table>
   <br>
@@ -442,6 +453,9 @@
       <th class="fieldtypeshort">
         R/S
       </th>
+      <th class="fieldtypeshort">
+        <button id="addequipmentbutton" onclick="onAddEquipment()">Add</button>
+      </th>
     </tr>
   </table>
   <br>
@@ -449,6 +463,9 @@
     <tr>
       <th class="fieldtype">
         Cyberware
+      </th>
+      <th class="fieldtypeshort">
+        <button id="addcyberwarebutton" onclick="onAddCyberware()">Add</button>
       </th>
     </tr>
   </table>
