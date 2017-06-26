@@ -2787,23 +2787,26 @@ function deleteFinanceItem(row) {
 }
 
 function deleteArmor(row) {
-    var armorname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    var armorname = row.cells[0].innerHTML;
     row.parentNode.removeChild(row);
-    //charData.armor.splice(charData.techniques.indexOf(armorname), 1);
+    var armor = charData.armor.find(x => x.name == armorname);
+    charData.armor.splice(charData.armor.indexOf(armor), 1);
     dataChanged();
 }
 
 function deleteWeapon(row) {
-    var weaponname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    var weaponname = row.cells[0].innerHTML;
     row.parentNode.removeChild(row);
-    //charData.weapons.splice(charData.weapons.indexOf(weaponname), 1);
+    var armor = charData.weapons.find(x => x.name == weaponname);
+    charData.weapons.splice(charData.weapons.indexOf(weapons), 1);
     dataChanged();
 }
 
 function deleteEquipment(row) {
-    var equipmentname = row.cells[0].childNodes[0].childNodes[1].innerHTML;
+    var equipmentname = row.cells[0].innerHTML;
     row.parentNode.removeChild(row);
-    //charData.equipment.splice(charData.equipment.indexOf(equipmentname), 1);
+    var equipment = charData.equipment.find(x => x.name == equipmentname);
+    charData.equipment.splice(charData.equipment.indexOf(equipment), 1);
     dataChanged();
 }
 
