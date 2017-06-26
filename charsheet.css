@@ -61,6 +61,7 @@ table.sheetsection {
 .fieldtypeshort {
     width: 36px;
     font-variant: small-caps;
+    text-align: center;
 }
 
 .fieldcontent {
