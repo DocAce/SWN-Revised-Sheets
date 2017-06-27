@@ -20,7 +20,7 @@ function getContentByID(id) {
 }
 
 function setContent(element, content) {
-    var value = content ? content : "-";
+    var value = (content != null) ? content : "-";
     if (isValueElement(element)) {
         element.value = value;
     }
@@ -285,8 +285,8 @@ var staticData = {
             "details": ["A dilettante has money and friends; your hero simply has the road. Whether they were knocked loose from polite society at a young age or have recently found themselves cast out of a familiar life, they now roam the ways of the world and the spaces between. Some heroes find this life satisfying, with its constant novelty and the regular excitement of bare survival. Others long for a more stable arrangement, and are willing to lend their pragmatic talents to a group that offers some prospect of profit."]
         },
         {
-	    "name": "Worker",
-	    "details": ["Countless in number, every industrialized world has swarms of workers to operate the machines and perform the labor that keeps society functioning. Cooks, factory laborers, mine workers, personal servants, lawyers, clerks, and innumerable other roles are covered under this career. If your hero rolls or picks Work as a skill but has a career that would better fit another existing skill, they may substitute it accordingly. Thus, a wage-slave programmer might take Program instead of Work, while a lawyer would use Administer instead as a reflection of their litigious talent."]
+	        "name": "Worker",
+	        "details": ["Countless in number, every industrialized world has swarms of workers to operate the machines and perform the labor that keeps society functioning. Cooks, factory laborers, mine workers, personal servants, lawyers, clerks, and innumerable other roles are covered under this career. If your hero rolls or picks Work as a skill but has a career that would better fit another existing skill, they may substitute it accordingly. Thus, a wage-slave programmer might take Program instead of Work, while a lawyer would use Administer instead as a reflection of their litigious talent."]
         }
     ],
     "foci": [
@@ -2307,7 +2307,7 @@ var charData = {
     "name": "",
     "class": "Expert",
     "species": "Human",
-    "background": "",
+    "background": "Barbarian",
     "homeworld": "",
     "xp": 0,
     "stats": { "cha": 0, "con": 0, "dex": 0, "int": 0, "str": 0, "wis": 0 },
@@ -3025,7 +3025,7 @@ function onNewFocusSelected(selection) {
     document.getElementById("addfocusbutton").disabled = "";
     var newfocus = selection.options[selection.selectedIndex].text;
     getFociTable().deleteRow(-1);
-    addFocus(newfocus, 0, false);
+    addFocus(newfocus, 1, false);
 }
 
 function onAddSkill() {
@@ -3333,14 +3333,19 @@ function handleFileSelect(evt) {
 }
 
 function getDataFromLocalStorage() {
+    var storagevalid = false;
     if (typeof (Storage) !== "undefined") {
         var storage = localStorage.getItem("swnchardata");
         if (storage) {
             parseCharFile(storage);
+            storagevalid = true;
         }
     }
     else {
         alert("Sorry, your browser does not support Web Storage...");
+    }
+    if (!storagevalid) {
+        fillCharSheet();
     }
 }
 
@@ -3357,5 +3362,6 @@ function setupFileOpenButton() {
                     Code that is executed on page load
 ******************************************************************************/
 
+//localStorage.removeItem("swnchardata"); // uncomment to test starting fresh 
 setupFileOpenButton();
 getDataFromLocalStorage();
