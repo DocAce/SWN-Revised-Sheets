@@ -503,7 +503,7 @@ var staticData = {
         {
             "name": "Exert",
             "type": "normal",
-            "details": ["Apply trained speed, strength, or stamina in some feat of physical exertion. Roll it to run, jump, lift, swim, climb, throw, and otherwise exert your bodily prowess. You can use it as a combat skill when throwing things if you wish."]
+            "details": ["Apply trained speed, strength, or stamina in some feat of physical exertion. Roll it to run, jump, lift, swim, climb, throw, and so forth. You can use it as a combat skill when throwing things, though it doesn't qualify as a combat skill for other ends."]
         },
         {
             "name": "Fix",
@@ -632,7 +632,7 @@ var staticData = {
             "type": "psychic",
             "details": [
             "Core Technique: <i>Telekinetic Manipulation</i>",
-            "The adept may Commit Effort for the scene as a Main Action to direct telekinetic force toward an object or person within unaided visual range or with tactile contact with the psychic. The strength and precision of the force increases with the expertise of the psychic. This force isn’t responsive enough to be usable as a weapon without further refinement of technique, and cannot cause damage to living or mobile targets. If used to crush or harm immobile unliving objects, it does 1d6 damage per skill level of the psychic.",
+            "The adept may Commit Effort for the scene as a Main Action to direct telekinetic force toward an object or person within unaided visual range or with tactile contact with the psychic. The strength and precision of the force increases with the expertise of the psychic. This force isn’t responsive enough to be usable as a weapon without further refinement of technique, and cannot cause damage to living or mobile targets. If used to crush or harm immobile unliving objects, it does 1d6 damage per skill level of the psychic per round of focus.",
             "A telekinetic force can be maintained over multiple rounds without expending further actions, such as holding a metal platform in place under a group of allies, but the psychic cannot use this technique on a second object until they release the first.",
             "<b>Level-0</b>: The psychic can exert force as if with one hand and their own physical strength.",
             "<b>Level-1</b>: The psychic can manipulate objects as if with both hands and can lift up to two hundred kilograms with this ability.",
@@ -652,7 +652,7 @@ var staticData = {
             "<b>Level-1</b>: A shallow gestalt with the target’s language centers allows the telepath to understand any form of communication made by the target. If the psychic has the requisite body parts to speak the target’s language, they can communicate with it in turn.",
             "<b>Level-2</b>: The psychic’s awareness of the target’s surface cognition is sophisticated enough to read their current thoughts, though it can’t pick up memories or non-obvious connections. The target gets a Mental saving throw to resist this.",
             "<b>Level-3</b>: The psychic can drill down into the target’s memory to get a one or two-sentence answer to any single question they ask, or receive a single answering vision of the target’s recollections. The target can attempt a Mental saving throw to resist this power, and whether or not it succeeds the contact is automatically ended. It can be re-established, but only by activating this technique again.",
-            "<b>Level-4</b>: The psychic can get a full and nuanced awareness of everything the target can remember about a particular topic. The target can attempt a Mental saving throw to resist this power, and whether or not it succeeds the contact is automatically ended. It can be re-established, but only by activating this technique again."
+            "<b>Level-4</b>: The psychic instantly gets a full and nuanced awareness of everything the target can remember about a particular topic. The target can attempt a Mental saving throw to resist this power, and whether or not it succeeds the contact is automatically ended afterwards. It can be re-established, but only by activating this technique again."
             ]
         },
         {
@@ -661,7 +661,7 @@ var staticData = {
             "details": [
             "Core Technique: <i>Personal Apportation</i>",
             "The teleporter can translocate to another location they have either occupied before or can see with their unaided vision. Locations are fixed in reference to the nearest major gravity well. For example, it is not possible to teleport to the cockpit of a distant moving vehicle they once occupied, but they can teleport to another point on a planet’s surface even though the planet has since moved far through the stellar void.",
-            "The core technique allows the teleporter to move himself and any mass he is able to carry with his own natural strength. Unwilling targets cannot be carried along, and willing ones must be touched. A teleporter can leave any clothing, shackles, adhesions, or other matter behind when he teleports, but he cannot leave behind matter that has been inserted into his body, such as cybernetics or shrapnel. Matter cannot be partially left behind.",
+            "The core technique allows the teleporter to move himself and any mass he is able to carry with his own natural strength. Resisting targets cannot be carried along, and unresisting ones must be touched. A teleporter can leave any clothing, shackles, adhesions, or other matter behind when he teleports, but he cannot leave behind matter that has been inserted into his body, such as cybernetics or shrapnel. Matter cannot be partially left behind.",
             "A teleporter will instinctively abort any apportation that would leave him embedded in a solid object or in an environment of imminent physical harm. Any Committed Effort on such aborted jumps is wasted, as is any action spent triggering the power.",
             "The maximum range of Personal Apportation depends on the teleporter’s skill level. Teleporting with Personal Apportation counts as a Main Action and requires that the psychic Commit Effort for the scene.",
             "<b>Level-0</b>: The psychic can teleport up to 10 meters.",
@@ -782,7 +782,7 @@ var staticData = {
             "details": ["The metapsion is capable of \"hanging\" a psychic power in their brain, forming the energy patterns and then suspending them in a self-sustaining loop until it's time to trigger their release. The psychic must Commit Effort for the day to hang a power, along with the Effort normally necessary to trigger it. None of this Effort can be recovered until the power is expended, after which it recovers at its usual speed. Activating the power is an Instant action, or an On Turn action if it allows the target a saving throw of some kind. Only one ability can be held suspended at any one time."]
         },
         {
-            "name": "Concert of Minds ",
+            "name": "Concert of Minds",
             "skill": "Metapsion",
             "level": 3,
             "details": ["As an On Turn action, the metapsion may Commit Effort and form a psychic gestalt with one or more willing psychics within three meters, including up to one other psychic per Metapsion skill level. This gestalt persists as long as the Effort remains committed, regardless of the subsequent distance between psychics. On their own turn, any member of the gestalt may use any power or technique known by any other member, using the other member’s skill levels as necessary and paying any Effort cost from their own pool. This gestalt shares only psychic power, not thoughts or senses. At the end of each round in which one or more members have used some other member’s powers or abilities on their turn of action, the metapsion must Commit Effort for the scene or the gestalt drops and cannot be re-established for the rest of the scene."]
@@ -794,7 +794,7 @@ var staticData = {
             "details": ["As a Main Action, the metapsion Commits Effort for the scene to create localized MES turbulence around a visible target psychic within 200 meters. Each time the target Commits Effort or an NPC uses a psychic power, they suffer 1d8 damage per Metapsion skill level of the adept. Each time the target suffers the damage they can attempt a Mental saving throw to throw off the effect. It lasts no longer than the rest of the scene at most. Only one application of this friction can affect a target at once."]
         },
         {
-            "name": "Psychic Tutelage ",
+            "name": "Psychic Tutelage",
             "skill": "Metapsion",
             "level": 3,
             "details": [
@@ -803,7 +803,7 @@ var staticData = {
             ]
         },
         {
-            "name": "Surge Momentum ",
+            "name": "Surge Momentum",
             "skill": "Metapsion",
             "level": 3,
             "details": [
@@ -812,19 +812,19 @@ var staticData = {
             ]
         },
         {
-            "name": "Flawless Mastery ",
+            "name": "Flawless Mastery",
             "skill": "Metapsion",
             "level": 4,
             "details": ["When this technique is learned, the adept may choose one technique from any discipline they know. That technique no longer requires Effort to be Committed in any way, though techniques that augment it may still exact a cost. If it has a duration based on Committed Effort then it lasts until the metapsion chooses to end it or is killed. This technique may only be mastered once, though the perfected technique may be changed with a month of meditation and practice."]
         },
         {
-            "name": "Impervious Pavis of Will ",
+            "name": "Impervious Pavis of Will",
             "skill": "Metapsion",
             "level": 4,
             "details": ["When this technique is learned, the metapsion must choose a discipline. They then become entirely immune to unwanted powers from that discipline; they and their abilities are simply not valid targets for purposes of that discipline’s powers unless the adept chooses to be affected. By Committing Effort for the day as an Instant action, they can extend this immunity for a scene to all allies within 50 meters. This technique may be learned more than once, and any shared protection applies to all disciplines negated by the adept."]
         },
         {
-            "name": "Intuitive Response ",
+            "name": "Intuitive Response",
             "skill": "Precognition",
             "level": 1,
             "details": ["As an Instant action, the precog can Commit Effort for the scene just before they roll Initiative. Their Initiative score is treated as one better than anyone else’s involved in the scene. If another participant has this power, roll Initiative normally to determine which of them goes first, and then the rest of the combatants act. This ability cannot be used if the precog has been surprised."]
@@ -857,13 +857,13 @@ var staticData = {
             ]
         },
         {
-            "name": "Cursed Luck ",
+            "name": "Cursed Luck",
             "skill": "Precognition",
             "level": 3,
             "details": ["Negative probabilities are woven tightly around a visible animate target, including robots and animals but not including vehicles. Triggering this technique requires a Main Action and Committing Effort for the scene. The target must roll any attack rolls, damage rolls, skill checks, and saving throws twice and take the worst result each time. Any attempts to hit the target or damage dice rolled against it may be rolled twice and the better result taken. Intelligent targets can make a Mental saving throw at the end of each round to throw off the effect; this save is not penalized by the power."]
         },
         {
-            "name": "Forced Outcome ",
+            "name": "Forced Outcome",
             "skill": "Precognition",
             "level": 3,
             "details": ["Through careful manipulation of probability, the adept can influence random physical events in their vicinity. Triggering this technique requires a Main Action and Committing Effort for the scene. Any simple, random mechanical outcome can be completely controlled for the scene, such as a roulette wheel or the order of a deck of shuffled cards. Any other physical event in the area that seems not-entirely-implausible may be made to occur by this technique, provided it doesn’t involve more than a few objects and doesn’t require human involvement. The GM decides what random events are and are not adequately possible. Anything more than one unusual coincidence or chance per scene is likely impossible to produce."]
@@ -881,37 +881,37 @@ var staticData = {
             "details": ["The power of the precog extends to dictating future events that directly involve them. The precog may make one prediction involving them personally within the next year. Provided they take reasonable measures to enable this prediction, that no direct resistance is mounted by an enemy, and that the prediction doesn’t seem highly improbable to the GM, it will come to pass. The adept must Commit Effort when this power is used, and the Effort remains Committed until the prophecy comes to pass or is abandoned. This ability cannot be used more than once per month and only one prophecy may be active at a time."]
         },
         {
-            "name": "Kinetic Transversal ",
+            "name": "Kinetic Transversal",
             "skill": "Telekinesis",
             "level": 1,
             "details": ["The adept may Commit Effort as an On Turn action to move freely over vertical or overhanging surfaces as if they were flat ground, crossing any solid surface strong enough to bear five kilos of weight. They can also move over liquids at their full movement rate. This movement ability lasts as long as the Effort is committed."]
         },
         {
-            "name": "Pressure Field ",
+            "name": "Pressure Field",
             "skill": "Telekinesis",
             "level": 1,
             "details": ["As an Instant action, the adept can manifest a protective force skin around their person equivalent to a vacc suit, maintaining pressure and temperature even in hard vacuum conditions. They can ignore temperatures at a range of plus or minus 100 degrees Celsius and automatically pressurize thin atmospheres for breathability, or filter particulates or airborn toxins. By Committing Effort for the scene, they can shield up to six comrades. This lasts until the user can and does reclaim the Effort."]
         },
         {
-            "name": "Telekinetic Armory ",
+            "name": "Telekinetic Armory",
             "skill": "Telekinesis",
             "level": 1,
             "details": [
-                "The adept may Commit Effort as an On Turn action to create weapons and armor out of telekinetic force. These weapons act as a rifle or an advanced melee weapon. Attack rolls use the better of the psychic’s Dexterity, Wisdom, or Constitution modifiers, and use the user’s Telekinesis skill level in place of Shoot or Stab.",
+                "The adept may Commit Effort as an On Turn action to create weapons and armor out of telekinetic force. These weapons act as a rifle or an advanced melee weapon. Attack rolls use the better of the psychic’s Dexterity, Wisdom, or Constitution modifiers, and may use the user’s Telekinesis skill level in place of Shoot or Stab.",
                 "Armor may be created as part of this power, granting the psychic a base armor class equal to 15 plus their Telekinesis skill level. This armor does not stack with conventional armor, but Dexterity modifies it as usual. The weapons and armor continue to exist as long as the psychic chooses to leave the Effort committed, and they may be invisible or visible at the psychic’s discretion."
             ]
         },
         {
-            "name": "Impact Sump ",
+            "name": "Impact Sump",
             "skill": "Telekinesis",
             "level": 2,
             "details": ["The adept may Commit Effort for the day as an Instant action to negate a single instance of physical damage. This ability is too taxing to be used more than once per day, but as an Instant action, it can be triggered even after damage is rolled."]
         },
         {
-            "name": "Skid Field ",
+            "name": "Slip Field",
             "skill": "Telekinesis",
             "level": 2,
-            "details": ["As a Main Action, the psychic Commits Effort for the scene and alters the friction at a point in sight up to ten meters in diameter, making it extremely difficult for enemies to move from their current position. All chosen targets must make an Evasion saving throw or fall prone, becoming unable to stand up or move more than a meter per Move action taken. If used against a ground vehicle, the driver must make a Dex/Pilot skill check at a difficulty of 8 plus the adept’s Telekinesis skill or go out of control, driving directly forward for a round and crashing into any obstacles. Targets who save are immune to this technique for the scene."]
+            "details": ["As a Main Action, the psychic Commits Effort for the scene and decreases the friction at a point in sight up to ten meters in diameter, making it extremely difficult for enemies to move from their current position. All chosen targets must make an Evasion saving throw or fall prone, becoming unable to stand up or move more than a meter per Move action taken. If used against a ground vehicle, the driver must make a Dex/Pilot skill check at a difficulty of 8 plus the adept’s Telekinesis skill or go out of control, driving directly forward for a round and crashing into any obstacles. Targets who save are immune to this technique for the scene."]
         },
         {
             "name": "Telekinetic Expertise",
@@ -925,24 +925,24 @@ var staticData = {
             "level": 2,
             "details": [
                 "Telekinetic power involves kinetic energy, but a sufficiently sophisticated grip on motion can be used to agitate the molecules of an inanimate object and cause it to melt or burst into flame. Similar focus can chill or freeze such substances.",
-                "Applying Thermokinesis to a target requires that the adept Commit Effort for the scene as a Main Action. Thermokinesis cannot affect objects larger than the adept could lift with their Telekinetic Manipulation. It cannot be applied to only part of a too-large single object.",
+                "Applying Thermokinesis to a target requires that the adept Commit Effort for the scene as a Main Action. Thermokinesis cannot affect objects larger than the adept could lift with their Telekinetic Manipulation.",
                 "As with other telekinetic powers, this ability does not work on objects being held or used by intelligent creatures. Non-sentient robots take 1d8 damage per level of Telekinesis skill each time this technique is applied to them."
             ]
         },
         {
-            "name": "Tangible Force Construct ",
+            "name": "Tangible Force Construct",
             "skill": "Telekinesis",
             "level": 3,
-            "details": ["As an On Turn action, the psychic can Commit Effort for the scene to create a telekinetic force construct at a visible point, provided it can fit within a three-meter cube. The force construct can be shaped in any way the psychic wishes, and can remain fixed in its location without external supports if desired. It is as sturdy as a TL4 construction and may be visible or invisible at the adept’s choice. The construct lasts until the end of the scene, until the psychic dispels it, or until it is smashed."]
+            "details": ["As an On Turn action, the psychic can Commit Effort for the scene to create a telekinetic force construct at a visible point, provided it can fit within a three-meter cube. The force construct can be shaped in any way the psychic wishes, and can remain fixed in its location without external supports if desired. It is as sturdy as a TL4 construction and may be visible or invisible at the adept’s choice. The construct lasts until the end of the scene, until the psychic dispels it, or until it is smashed with 20 points of damage against AC 10."]
         },
         {
-            "name": "Telekinetic Ram ",
+            "name": "Telekinetic Ram",
             "skill": "Telekinesis",
             "level": 3,
             "details": ["As a Main Action, the psychic can Commit Effort for the scene to target a tremendous, uncontrolled burst of force at a single target within sight. This burst requires some time to detonate, however, and will only go off at the end of the next round. Targets of this technique are aware of an oppressive, electrical tingling in the air and are apt to instinctively move; this technique is thus generally useless against any target that is not entirely immobile, as any movement of a chosen target disrupts the ram. Once the ram detonates, however, it is sufficient to destroy any immobile civilian vehicle, create a five-meter hole in anything short of hardened military fortifications, or inflict 5d12 damage on anything else as if it were struck by a Heavy weapon."]
         },
         {
-            "name": "Reactive Telekinesis ",
+            "name": "Reactive Telekinesis",
             "skill": "Telekinesis",
             "level": 3,
             "details": ["As an Instant, the psychic can Commit Effort for the scene whenever an assailant misses them with a physical attack. The attack is then reflected back against the assailant, who must reroll the attack against their own person twice. If either roll hits, the assailant suffers damage from their own attack. If both rolls hit, the damage is the maximum possible."]
@@ -954,10 +954,10 @@ var staticData = {
             "details": ["As a Main Action, the telekinetic can Commit Effort for the day to suborn a visible target’s mobility, whether robotic, vehicular, or human, provided it’s no larger than a ground car. A sapient victim can make a Mental saving throw to resist the psychic onslaught; on a failure, they lose control of their physical actions. If not piloted by the telekinetic, the target remains motionless or continues on its current direction of travel. If the telekinetic spends a Main Action to control them, they can be made to perform any physical action that is not directly suicidal, using the psychic’s skill levels and hit bonus for any attacks or skill checks they might make. The puppetry lasts until the end of the scene, until the target leaves the psychic’s sight, or until a sapient target believes that their action or inaction is about to get them killed. The psychic’s control is fine enough to achieve even very delicate physical motions, but it is not good enough to control the target’s speech- though it can keep them silent."]
         },
         {
-            "name": "Telekinetic Glide ",
+            "name": "Telekinetic Flight",
             "skill": "Telekinesis",
             "level": 4,
-            "details": ["As an Instant action, the telekinetic can Commit Effort to begin gliding, and may extend this effect to up to a half-dozen unresisting, human-sized allies within 30 meters. While gliding, the psychic can move at their normal movement rate in any direction, though they cannot gain altitude unless they physically climb or are lifted by air currents. They can plunge earthward at up to terminal velocity without harm, and even orbital insertions are survivable with this power if a vacc suit is available or the Pressure Field technique is used. Allies must remain within 30 meters of the psychic to maintain this gliding. As an Instant, this power may be triggered in time to negate falling damage. The gliding lasts for as long as the Effort remains Committed."]
+            "details": ["As an Instant action, the telekinetic can Commit Effort to begin flying, and may extend this effect to up to a half-dozen unresisting, human-sized allies within 30 meters. While flying, the psychic can move at twice their normal movement rate in any direction They can plunge earthward at up to terminal velocity without harm, and even orbital insertions are survivable with this power if a vacc suit is available or the Pressure Field technique is used. Allies must end their turns within 30 meters of the psychic to maintain this flight. As an Instant, this power may be triggered in time to negate falling damage. The flight lasts for as long as the Effort remains Committed."]
         },
         {
             "name": "Facile Mind",
@@ -966,7 +966,7 @@ var staticData = {
             "details": ["The telepath is practiced at opening a Telepathic Contact, and need only Commit Effort for the scene to do so, instead of Committing Effort for the day. If contacting an ally who has practiced the process with the psychic for at least a week, opening the contact normally requires no Effort at all. In both cases, if the telepath chooses to Commit Effort for the day, they can open a Telepathic Contact as an Instant action rather than a Main Action."]
         },
         {
-            "name": "Transmit Thought ",
+            "name": "Transmit Thought",
             "skill": "Telepathy",
             "level": 1,
             "details": ["The telepath can send thoughts and images over a Telepathic Contact, allowing two-way communication with a willing target as an Instant action when desired."]
@@ -984,13 +984,13 @@ var staticData = {
             "details": ["Through intense focus, the telepath can make the target of a Telepathic Contact simply not think about something, whether that’s the presence of the telepath, the possibility of committing violence, the absence of important documentation, or any other single potential action or one specific person. This technique requires the psychic to Commit Effort for the scene as a Main Action. The target gets a Mental saving throw to resist this power and become immune to it for the scene. If failed, the thought remains unthinkable for the rest of the scene unless the target perceives physical danger or a traumatic threat to something they prize highly. In that case, the block instantly dissolves and cannot be re-established during the scene. Once the effect ends, the target will remain oblivious to their temporary fugue unless it is brought to their attention somehow."]
         },
         {
-            "name": "Reflex Response ",
+            "name": "Reflex Response",
             "skill": "Telepathy",
             "level": 3,
             "details": ["As a Main Action, the telepath can Commit Effort for the day to force a sudden, irrational impulse into the target of a Telepathic Contact. The target may make a Mental saving throw to resist; on a failure, they will use their next available action to carry out the impulse to the best of their ability. This impulse cannot be self-injurious or harmful to a loved one, but it can be foolish, reckless, or harmful to others. The target may not understand why they have done the action, but will usually attempt to rationalize it as their choice."]
         },
         {
-            "name": "Telepathic Assault ",
+            "name": "Telepathic Assault",
             "skill": "Telepathy",
             "level": 3,
             "details": ["The telepath Commits Effort for the day as a Main Action to force a wave of metadimensional energy through the brain of a Telepathic Contact target. The assault does 6d6 damage, or 9d6 damage if the telepath has Telepathy-4 skill. The target may make a Mental saving throw to halve the damage. This assault cannot kill a target, but can knock them unconscious for an hour if they’re reduced to zero hit points, after which they wake up with one hit point. A victim cannot be targeted by an assault more than once per scene."]
@@ -1002,7 +1002,7 @@ var staticData = {
             "details": ["The telepath can make simple edits to the memory of a target currently linked by a Telepathic Contact. Events of no more than 24 hours in duration can be erased from memory, conversations can be created or changed, new events can be added to a day, or other similar alterations made. The psychic can make these changes as a Main Action by Committing Effort for the day. If the psychic doesn’t have a good understanding of the memories they’re changing, such as might be granted by the level-4 degree of Telepathic Contact, the edits they make may not fit well. The target gets a Mental saving throw to resist editing for the rest of the scene, but on a failure, they will not notice the changed memories until given a reason to recollect them."]
         },
         {
-            "name": "Unity of Thought ",
+            "name": "Unity of Thought",
             "skill": "Telepathy",
             "level": 4,
             "details": ["The telepath becomes exceptionally skilled at weaving together multiple allied minds. When they establish a Telepathic Contact with a willing ally they may bind up to six willing participants into the same contact without further Effort. This multi-person link is relatively shallow, and allows only the Instant exchange of thoughts, images, and sensory impressions. While under its effect, every participant knows the exact location and condition of all others, and uses the best Initiative roll of any of them if combat commences. At the table, up to five minutes of discussion and coordination among the players can be arranged each round without incurring delays for the PCs. Every combat turn, one gestalt member of the psychic's choice gets an extra round of action to represent the benefits of the perfect coordination of the group. The psychic cannot gain this bonus round himself. The telepathic link lasts as long as the psychic maintains the contact, and it has a range that extends to any point within a solar system."]
@@ -1020,25 +1020,25 @@ var staticData = {
             "details": ["The psychic may Commit Effort as an On Turn action to gain an intuitive awareness of their physical surroundings. The sense is roughly equivalent to sight out to 100 meters, though it cannot read text or distinguish colors. It is blocked by solid objects but is unimpeded by darkness, mist, blinding light, holograms, or optical illusions. The sense lasts as long as the Effort remains Committed to the technique."]
         },
         {
-            "name": "Burdened Apportation ",
+            "name": "Burdened Apportation",
             "skill": "Teleportation",
             "level": 2,
             "details": ["The psychic can carry willing companions with them when using Personal Apportation. Up to three human-sized companions and their man-portable gear may be carried per skill level in Teleportation. Allies must be within 3 meters of the teleporter to be carried along. Ordinary inert matter cannot be carried along unless the psychic is touching it or it’s being carried by an ally affected by this power. If carrying inert mass, up to two hundred kilos of objects can be carried per skill level. Using this technique increases the Effort cost of Personal Apportation, requiring that an extra point of Effort be Committed for the day."]
         },
         {
-            "name": "Perceptive Dislocation ",
+            "name": "Perceptive Dislocation",
             "skill": "Teleportation",
             "level": 2,
-            "details": ["Commit Effort for the day to see any location the psychic could teleport to. The sight lasts for fifteen mi"]
+            "details": ["Commit Effort for the day to sense any location the psychic could teleport to. The psychic perceives the location as if there, lasting for fifteen minutes at most."]
         },
         {
             "name": "Spatial Synchrony Mandala",
             "skill": "Teleportation",
             "level": 2,
-            "details": ["The psychic imprints a particular object or person on their psionic awareness. Provided the object is relatively intact and in range of their Personal Apportation, the psychic always knows its exact location and can teleport to within three meters of it with Personal Apportation even if it has moved from its original location. Imprinting an object requires an hour’s meditation, and only one object can be imprinted at a time. If imprinting on a person, the target must be willing and cooperative to make the imprint. Objects must be at least one kilogram in mass to be effectively tracked."]
+            "details": ["The psychic imprints a particular object or person on their psionic awareness. Provided the object is relatively intact and in range of their Personal Apportation, the psychic always knows its exact location and can teleport to within three meters of it with Personal Apportation even if it has moved from its original location. Imprinting an object requires an hour’s meditation with it, and only one object can be imprinted at a time. If imprinting on a person, the target must be willing and cooperative to make the imprint. Objects must be at least one kilogram in mass to be effectively tracked."]
         },
         {
-            "name": "Effortless Apportation ",
+            "name": "Effortless Apportation",
             "skill": "Teleportation",
             "level": 3,
             "details": ["The psychic does not need to Commit Effort to use Personal Apportation. If the technique is augmented by other techniques that come with their own extra cost, however, this extra cost must still be paid."]
@@ -1050,12 +1050,12 @@ var staticData = {
             "details": ["The psychic can instinctively micro-teleport away from incoming danger. As an On Turn action they may Commit Effort to begin shifting their spatial position away from attacks, gaining a base armor class of 20 so long as the Effort remains Committed. This armor class is not modified by physical armor or Dexterity modifiers, and the micro-jumps do not significantly move the psychic from their current location. While Stutterjump is active, as an Instant action the adept may Commit Effort for the day to negate a successful hit by a weapon attack, even after damage has been rolled. This reflexive defensive jump may be used only once per day and leaves the psychic just outside the radius of explosions or other area-effect attacks."]
         },
         {
-            "name": "Rift Reduplication ",
+            "name": "Rift Reduplication",
             "skill": "Teleportation",
             "level": 3,
             "details": [
                 "Expert teleporters can be infuriatingly difficult to pin down. By Committing an additional Effort for the day as an Instant action, the adept can use Personal Apportation as an On Turn action, even if they've already used it once this round. Apporting itself costs whatever Effort it normally would, in addition to any techniques that augment it. Rift Reduplication can only be triggered once per round.",
-                "If the adept uses their powers to teleport into a location, perform an action, and then use Rift Reduplication to teleport back out, onlookers in the area will not have time to react to their action or attack the adept unless they onlookers have held their action explicitly to counter the psychic. Enemies who hold their action this way waste it entirely if the psychic does not give them a chance to attack or otherwise interfere. Such a lightning strike may be surprising to onlookers, but it doesn't allow enough preparation time to count as a surprise attack as described on page XX."
+                "If the adept uses their powers to teleport into a location, perform an action, and then use Rift Reduplication to teleport back out, onlookers in the area will not have time to react to their action or attack the adept unless the onlookers have held their action explicitly to counter the psychic. Enemies who hold their action this way waste it entirely if the psychic does not give them a chance to attack or otherwise interfere. Such a lightning strike may be surprising to onlookers, but it doesn't allow enough preparation time to count as a surprise attack as described on page XX."
             ]
         },
         {
